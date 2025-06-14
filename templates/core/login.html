@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - Ahorrito Gaming{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card bg-dark-card shadow-lg">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="card-title text-center mb-4">Iniciar Sesión</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p>¿No tienes una cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

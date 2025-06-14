@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tu Carrito de Compras - Ahorrito Gaming{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Tu Carrito de Compras</h1>
+
+{% if not cart_items %}
+    <div class="alert alert-info text-center" role="alert">
+        <p class="h4 mb-3">Tu carrito está vacío.</p>
+        <a href="{% url 'index' %}" class="btn btn-primary">¡Empieza a comprar!</a>
+    </div>
+{% else %}
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 10%;">Producto</th>
+                    <th scope="col" style="width: 35%;"></th>
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+ <tbody>
+    {% for item in cart_items %}
+    <tr>
+        <td>
+            {% if item.producto.imagen %}
+                <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.nombre }}" class="img-fluid rounded" style="max-width: 100px;">
+            {% else %}
+                <img src="https://placehold.co/100x100/1e1e1e/7b4cff?text=Sin+Imagen" class="img-fluid rounded" alt="Imagen no disponible">
+            {% endif %}
+        </td>
+        <td>{{ item.producto.nombre }}</td>
+        <td>${{ item.producto.precio }}</td>
+        <td>
+            <div class="input-group" style="width: 120px;">
+                <a href="{% url 'cart:decrement_cart_item' item.producto.id %}" class="btn btn-outline-secondary btn-sm">-</a>
+                <input type="text" class="form-control form-control-sm text-center" value="{{ item.cantidad }}" readonly>
+                <a href="{% url 'cart:add_to_cart' item.producto.id %}" class="btn btn-outline-secondary btn-sm">+</a>
+            </div>
+        </td>
+        <td>${{ item.subtotal }}</td>
+        <td>
+            <a href="{% url 'cart:remove_from_cart' item.producto.id %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+        </table>
+    </div>
+
+    <div class="row justify-content-end mt-4">
+        <div class="col-md-5 col-lg-4">
+            <div class="card bg-dark-card">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-3">Resumen del Pedido</h4>
+                    <div class="d-flex justify-content-between">
+                        <h5>Total:</h5>
+                        <h5 class="text-primary">${{ total_cart_price }}</h5>
+                    </div>
+                    <div class="d-grid mt-3">
+                        <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-lg">Proceder al Pago</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

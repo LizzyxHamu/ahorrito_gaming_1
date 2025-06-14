@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programa de Afiliados - Ahorrito Gaming</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+         <!-- Incluir el menú -->
+    <div data-include="includes/menu.html"></div>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <h1 class="mb-4">Programa de Afiliados</h1>
+        
+        <!-- Hero Section -->
+        <div class="bg-dark p-5 rounded mb-5 text-center">
+            <h2 class="mb-3">Gana dinero recomendando Ahorrito Gaming</h2>
+            <p class="lead mb-4">Únete a nuestro programa de afiliados y recibe comisiones por cada venta que generes</p>
+            <a href="#registro" class="btn btn-primary btn-lg">Únete ahora</a>
+        </div>
+        
+        <!-- How it Works -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4">¿Cómo funciona?</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="bg-dark p-4 rounded h-100 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-plus fa-3x text-primary"></i>
+                        </div>
+                        <h4>1. Regístrate</h4>
+                        <p>Completa el formulario de registro para unirte a nuestro programa de afiliados.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bg-dark p-4 rounded h-100 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-link fa-3x text-primary"></i>
+                        </div>
+                        <h4>2. Comparte</h4>
+                        <p>Recibe tu enlace único de afiliado y compártelo en tus redes sociales, sitio web o canal.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bg-dark p-4 rounded h-100 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-shopping-cart fa-3x text-primary"></i>
+                        </div>
+                        <h4>3. Genera ventas</h4>
+                        <p>Cuando alguien compra a través de tu enlace, registramos la venta automáticamente.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bg-dark p-4 rounded h-100 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-money-bill-wave fa-3x text-primary"></i>
+                        </div>
+                        <h4>4. Recibe comisiones</h4>
+                        <p>Gana hasta un 10% de comisión por cada venta generada a través de tu enlace.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Benefits -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4">Beneficios del programa</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <h4><i class="fas fa-percentage text-primary me-2"></i> Comisiones atractivas</h4>
+                        <p>Gana entre un 5% y 10% de comisión por cada venta, dependiendo del volumen mensual.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <h4><i class="fas fa-calendar-alt text-primary me-2"></i> Pagos mensuales</h4>
+                        <p>Recibe tus comisiones mensualmente a través de transferencia bancaria, PayPal o criptomonedas.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <h4><i class="fas fa-chart-line text-primary me-2"></i> Panel de control</h4>
+                        <p>Accede a un panel de control completo para seguir tus estadísticas y comisiones en tiempo real.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <h4><i class="fas fa-cookie text-primary me-2"></i> Cookies de 30 días</h4>
+                        <p>Las cookies de seguimiento duran 30 días, lo que significa que recibirás comisión incluso si el usuario compra días después de hacer clic en tu enlace.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <h4><i class="fas fa-ad text-primary me-2"></i> Material promocional</h4>
+                        <p>Accede a banners, imágenes y textos promocionales para maximizar tus conversiones.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <h4><i class="fas fa-headset text-primary me-2"></i> Soporte dedicado</h4>
+                        <p>Cuenta con un gestor de afiliados dedicado para resolver tus dudas y ayudarte a maximizar tus ganancias.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Commission Structure -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4">Estructura de comisiones</h2>
+            <div class="table-responsive">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th>Ventas mensuales</th>
+                            <th>Tasa de comisión</th>
+                            <th>Ejemplo de ganancias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1-10 ventas</td>
+                            <td>5%</td>
+                            <td>10 ventas x $50 promedio x 5% = $25</td>
+                        </tr>
+                        <tr>
+                            <td>11-30 ventas</td>
+                            <td>7%</td>
+                            <td>30 ventas x $50 promedio x 7% = $105</td>
+                        </tr>
+                        <tr>
+                            <td>31+ ventas</td>
+                            <td>10%</td>
+                            <td>50 ventas x $50 promedio x 10% = $250</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Testimonials -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4">Lo que dicen nuestros afiliados</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <img src="https://placehold.co/50x50" class="rounded-circle me-3" alt="Afiliado">
+                                <div>
+                                    <h5 class="mb-0">Carlos R.</h5>
+                                    <small class="text-muted">YouTuber Gaming</small>
+                                </div>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p>"El programa de afiliados de Ahorrito Gaming ha sido un complemento perfecto para mi canal de YouTube. Las comisiones son excelentes y el panel de control es muy intuitivo."</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <img src="https://placehold.co/50x50" class="rounded-circle me-3" alt="Afiliado">
+                                <div>
+                                    <h5 class="mb-0">Laura M.</h5>
+                                    <small class="text-muted">Blogger de Tecnología</small>
+                                </div>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p>"Lo que más me gusta es la transparencia del programa. Puedo ver exactamente de dónde vienen mis comisiones y el soporte siempre está disponible para resolver mis dudas."</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-dark p-4 rounded h-100">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <img src="https://placehold.co/50x50" class="rounded-circle me-3" alt="Afiliado">
+                                <div>
+                                    <h5 class="mb-0">Miguel A.</h5>
+                                    <small class="text-muted">Streamer en Twitch</small>
+                                </div>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p>"He probado varios programas de afiliados y el de Ahorrito Gaming es, sin duda, el mejor. Las comisiones son competitivas y los pagos siempre llegan a tiempo."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Registration Form -->
+        <section id="registro" class="mb-5">
+            <h2 class="text-center mb-4">Únete a nuestro programa de afiliados</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="bg-dark p-4 rounded">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <label for="nombre" class="form-label">Nombre completo</label>
+                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="nombre" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Correo electrónico</label>
+                                    <input type="email" class="form-control bg-dark text-light border-secondary" id="email" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <label for="website" class="form-label">Sitio web/Canal/Perfil</label>
+                                    <input type="url" class="form-control bg-dark text-light border-secondary" id="website" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tipo" class="form-label">Tipo de contenido</label>
+                                    <select class="form-select bg-dark text-light border-secondary" id="tipo" required>
+                                        <option value="" selected disabled>Selecciona una opción</option>
+                                        <option value="youtube">Canal de YouTube</option>
+                                        <option value="twitch">Canal de Twitch</option>
+                                        <option value="blog">Blog</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="tiktok">TikTok</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="audiencia" class="form-label">Tamaño de audiencia</label>
+                                <select class="form-select bg-dark text-light border-secondary" id="audiencia" required>
+                                    <option value="" selected disabled>Selecciona una opción</option>
+                                    <option value="pequena">Menos de 1,000 seguidores</option>
+                                    <option value="mediana">1,000 - 10,000 seguidores</option>
+                                    <option value="grande">10,000 - 50,000 seguidores</option>
+                                    <option value="muy_grande">Más de 50,000 seguidores</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="experiencia" class="form-label">¿Tienes experiencia previa como afiliado?</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="experiencia" id="experiencia_si" value="si">
+                                    <label class="form-check-label" for="experiencia_si">Sí</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="experiencia" id="experiencia_no" value="no">
+                                    <label class="form-check-label" for="experiencia_no">No</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mensaje" class="form-label">¿Por qué quieres unirte a nuestro programa de afiliados?</label>
+                                <textarea class="form-control bg-dark text-light border-secondary" id="mensaje" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="terminos" required>
+                                <label class="form-check-label" for="terminos">He leído y acepto los <a href="terminos-afiliados.html">términos y condiciones</a> del programa de afiliados</label>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4">Preguntas frecuentes</h2>
+            <div class="accordion" id="accordionFAQ">
+                <div class="accordion-item bg-dark text-light border-secondary">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            ¿Cuánto puedo ganar como afiliado?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body">
+                            Tus ganancias dependerán del número de ventas que generes y del valor de las mismas. Con nuestra estructura de comisiones escalonada, puedes ganar entre un 5% y un 10% por cada venta. Algunos de nuestros afiliados más activos ganan más de $500 mensuales.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-dark text-light border-secondary">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            ¿Cuándo y cómo recibo mis pagos?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body">
+                            Los pagos se realizan mensualmente, durante los primeros 10 días del mes, por las comisiones generadas el mes anterior. Ofrecemos varios métodos de pago: transferencia bancaria, PayPal y criptomonedas. El monto mínimo para solicitar un pago es de $20.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-dark text-light border-secondary">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            ¿Hay algún requisito para unirse al programa?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body">
+                            No exigimos un número mínimo de seguidores, pero evaluamos cada solicitud individualmente. Buscamos afiliados que tengan una audiencia interesada en videojuegos y que compartan nuestros valores. Tu solicitud será revisada por nuestro equipo y te notificaremos la decisión en un plazo de 3-5 días hábiles.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-dark text-light border-secondary">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            ¿Puedo promocionar cualquier producto de la tienda?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body">
+                            Sí, puedes promocionar cualquier producto disponible en nuestra tienda. Además, te notificaremos sobre ofertas especiales y promociones exclusivas que puedes compartir con tu audiencia para maximizar tus conversiones.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact -->
+        <section>
+            <div class="row">
+                <div class="col-md-8 mx-auto text-center">
+                    <div class="bg-dark p-4 rounded">
+                        <h4>¿Tienes más preguntas?</h4>
+                        <p>Nuestro equipo de gestión de afiliados está disponible para ayudarte.</p>
+                        <a href="mailto:afiliados@ahorritogaming.cl" class="btn btn-primary">
+                            <i class="fas fa-envelope me-2"></i>afiliados@ahorritogaming.cl
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<!-- Incluir el footer -->
+<div data-include="includes/footer.html"></div>
+
+<!-- Cookie Consent -->
+<div class="position-fixed bottom-0 start-0 end-0 p-3 bg-dark" style="z-index: 1050; display: block;" id="cookieConsent">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <p class="mb-md-0">Utilizamos cookies para mejorar tu experiencia. Al continuar navegando, aceptas nuestra <a href="#" class="text-primary">política de cookies</a>.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                <button class="btn btn-primary me-2" id="acceptCookies">Aceptar</button>
+                <button class="btn btn-outline-light" id="rejectCookies">Rechazar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Back to Top Button -->
+<a href="#" class="btn btn-primary position-fixed bottom-0 end-0 m-4 rounded-circle" id="backToTop" style="width: 50px; height: 50px; display: none; align-items: center; justify-content: center; z-index: 1000;">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Includes JS -->
+<script src="assets/js/includes.js"></script>
+<!-- Custom JS -->
+<script src="assets/js/scripts.js"></script>
+</body>
+</html>

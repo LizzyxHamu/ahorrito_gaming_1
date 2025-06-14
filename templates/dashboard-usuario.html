@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - Ahorrito Gaming</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .sidebar {
+            background-color: #1e1e1e;
+            border-right: 1px solid #333;
+        }
+        
+        .sidebar-link {
+            color: #f8f9fa;
+            padding: 12px 20px;
+            display: block;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: #7b4cff;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #7b4cff;
+        }
+        
+        .order-card:hover {
+            border-color: #7b4cff !important;
+        }
+        
+        .review-stars {
+            color: #ffc107;
+        }
+        
+        .rating-input i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Incluir el menú -->
+    <div data-include="includes/menu.html"></div>
+
+    <!-- Hero Section -->
+    <section class="bg-dark py-5">
+        <div class="container">
+            <h1 class="text-center mb-0">Mi Cuenta</h1>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-lg-3 mb-4">
+                    <div class="card bg-dark border-secondary">
+                        <div class="card-body text-center py-5">
+                            <img src="https://placehold.co/150x150?text=User" class="user-avatar mb-3" alt="User Avatar">
+                            <h5 class="mb-1">Daniel San Martín</h5>
+                            <p class="text-muted mb-3">Miembro desde: Enero 2024</p>
+                            <div class="d-grid">
+                                <a href="#" class="btn btn-outline-danger">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="sidebar-link" data-target="mis-pedidos">
+                                <i class="fas fa-shopping-bag me-2"></i>Mis Pedidos
+                            </a>
+                            <a href="#" class="sidebar-link" data-target="lista-deseos">
+                                <i class="fas fa-heart me-2"></i>Lista de Deseos
+                            </a>
+                            <a href="#" class="sidebar-link" data-target="mis-claves">
+                                <i class="fas fa-key me-2"></i>Mis Claves
+                            </a>
+                            <a href="#" class="sidebar-link" data-target="mis-resenas">
+                                <i class="fas fa-star me-2"></i>Mis Reseñas
+                            </a>
+                            <a href="#" class="sidebar-link" data-target="editar-perfil">
+                                <i class="fas fa-user-edit me-2"></i>Editar Perfil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="col-lg-9">
+                    <!-- Mis Pedidos -->
+                    <div id="mis-pedidos" class="tab-content">
+                        <h2 class="mb-4">Mis Pedidos</h2>
+                        
+                        <!-- Filtros -->
+                        <div class="card bg-dark border-secondary mb-4">
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="orderStatus" class="form-label">Estado</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="orderStatus">
+                                            <option value="all">Todos</option>
+                                            <option value="completed">Completados</option>
+                                            <option value="processing">En proceso</option>
+                                            <option value="pending">Pendientes</option>
+                                            <option value="cancelled">Cancelados</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="orderDateFrom" class="form-label">Desde</label>
+                                        <input type="date" class="form-control bg-dark text-light border-secondary" id="orderDateFrom">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="orderDateTo" class="form-label">Hasta</label>
+                                        <input type="date" class="form-control bg-dark text-light border-secondary" id="orderDateTo">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button class="btn btn-primary">Filtrar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Lista de pedidos -->
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100 order-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Pedido #AG-2024-1234</h5>
+                                            <span class="badge bg-success">Completado</span>
+                                        </div>
+                                        <p class="mb-1"><strong>Fecha:</strong> 15/06/2024</p>
+                                        <p class="mb-1"><strong>Total:</strong> $38.780</p>
+                                        <p class="mb-3"><strong>Productos:</strong> 2 items</p>
+                                        <div class="d-flex">
+                                            <img src="https://placehold.co/50x25?text=Game" class="me-1" alt="Game">
+                                            <img src="https://placehold.co/50x25?text=Game" class="me-1" alt="Game">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#orderDetailModal">
+                                            Ver detalles
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100 order-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Pedido #AG-2024-1233</h5>
+                                            <span class="badge bg-success">Completado</span>
+                                        </div>
+                                        <p class="mb-1"><strong>Fecha:</strong> 02/06/2024</p>
+                                        <p class="mb-1"><strong>Total:</strong> $49.990</p>
+                                        <p class="mb-3"><strong>Productos:</strong> 1 item</p>
+                                        <div class="d-flex">
+                                            <img src="https://placehold.co/50x25?text=Game" class="me-1" alt="Game">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#orderDetailModal">
+                                            Ver detalles
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100 order-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Pedido #AG-2024-1231</h5>
+                                            <span class="badge bg-success">Completado</span>
+                                        </div>
+                                        <p class="mb-1"><strong>Fecha:</strong> 15/05/2024</p>
+                                        <p class="mb-1"><strong>Total:</strong> $54.990</p>
+                                        <p class="mb-3"><strong>Productos:</strong> 1 item</p>
+                                        <div class="d-flex">
+                                            <img src="https://placehold.co/50x25?text=Game" class="me-1" alt="Game">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#orderDetailModal">
+                                            Ver detalles
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100 order-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Pedido #AG-2024-1230</h5>
+                                            <span class="badge bg-success">Completado</span>
+                                        </div>
+                                        <p class="mb-1"><strong>Fecha:</strong> 02/05/2024</p>
+                                        <p class="mb-1"><strong>Total:</strong> $39.990</p>
+                                        <p class="mb-3"><strong>Productos:</strong> 1 item</p>
+                                        <div class="d-flex">
+                                            <img src="https://placehold.co/50x25?text=Game" class="me-1" alt="Game">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#orderDetailModal">
+                                            Ver detalles
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Deseos -->
+                    <div id="lista-deseos" class="tab-content">
+                        <h2 class="mb-4">Lista de Deseos</h2>
+                        
+                        <!-- Filtros -->
+                        <div class="card bg-dark border-secondary mb-4">
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="wishlistPlatform" class="form-label">Plataforma</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="wishlistPlatform">
+                                            <option value="all">Todas</option>
+                                            <option value="pc">PC</option>
+                                            <option value="ps5">PlayStation</option>
+                                            <option value="xbox">Xbox</option>
+                                            <option value="nintendo">Nintendo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="wishlistPrice" class="form-label">Precio</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="wishlistPrice">
+                                            <option value="all">Todos</option>
+                                            <option value="under10000">Menos de $10.000</option>
+                                            <option value="10000-30000">$10.000 - $30.000</option>
+                                            <option value="30000-50000">$30.000 - $50.000</option>
+                                            <option value="over50000">Más de $50.000</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="wishlistSort" class="form-label">Ordenar por</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="wishlistSort">
+                                            <option value="date_desc">Fecha: Más reciente</option>
+                                            <option value="date_asc">Fecha: Más antiguo</option>
+                                            <option value="price_desc">Precio: Mayor a menor</option>
+                                            <option value="price_asc">Precio: Menor a mayor</option>
+                                            <option value="name_asc">Nombre: A-Z</option>
+                                            <option value="name_desc">Nombre: Z-A</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button class="btn btn-primary">Filtrar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Lista de juegos en lista de deseos -->
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x150?text=Game+Cover" class="card-img-top" alt="Game Cover">
+                                        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" title="Eliminar de la lista de deseos">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <div class="discount-badge">-50%</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Starfield</h5>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <span class="text-decoration-line-through text-muted me-2">$69.990</span>
+                                                <span class="game-price">$34.990</span>
+                                            </div>
+                                            <span class="badge bg-danger">XBOX</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">Añadido el 15/06/2024</small>
+                                            <span class="badge bg-success">En oferta</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x150?text=Game+Cover" class="card-img-top" alt="Game Cover">
+                                        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" title="Eliminar de la lista de deseos">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">God of War Ragnarök</h5>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="game-price">$54.990</span>
+                                            <span class="badge bg-primary">PS5</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">Añadido el 10/06/2024</small>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x150?text=Game+Cover" class="card-img-top" alt="Game Cover">
+                                        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" title="Eliminar de la lista de deseos">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <div class="discount-badge">-30%</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Baldur's Gate 3</h5>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <span class="text-decoration-line-through text-muted me-2">$49.990</span>
+                                                <span class="game-price">$34.990</span>
+                                            </div>
+                                            <span class="badge bg-success">PC</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">Añadido el 05/06/2024</small>
+                                            <span class="badge bg-success">En oferta</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x150?text=Game+Cover" class="card-img-top" alt="Game Cover">
+                                        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" title="Eliminar de la lista de deseos">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Zelda: Tears of the Kingdom</h5>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="game-price">$49.990</span>
+                                            <span class="badge bg-warning text-dark">Switch</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">Añadido el 01/06/2024</small>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x150?text=Game+Cover" class="card-img-top" alt="Game Cover">
+                                        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" title="Eliminar de la lista de deseos">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Spider-Man 2</h5>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="game-price">$64.990</span>
+                                            <span class="badge bg-primary">PS5</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">Añadido el 25/05/2024</small>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x150?text=Game+Cover" class="card-img-top" alt="Game Cover">
+                                        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" title="Eliminar de la lista de deseos">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <div class="discount-badge">-75%</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Horizon Forbidden West</h5>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <span class="text-decoration-line-through text-muted me-2">$54.990</span>
+                                                <span class="game-price">$13.750</span>
+                                            </div>
+                                            <span class="badge bg-primary">PS5</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">Añadido el 20/05/2024</small>
+                                            <span class="badge bg-success">En oferta</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    
+                    <!-- Mis Claves -->
+                    <div id="mis-claves" class="tab-content">
+                        <h2 class="mb-4">Mis Claves</h2>
+                        
+                        <!-- Filtros -->
+                        <div class="card bg-dark border-secondary mb-4">
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="keyPlatform" class="form-label">Plataforma</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="keyPlatform">
+                                            <option value="all">Todas</option>
+                                            <option value="pc">PC</option>
+                                            <option value="ps5">PlayStation</option>
+                                            <option value="xbox">Xbox</option>
+                                            <option value="nintendo">Nintendo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="keyDateFrom" class="form-label">Desde</label>
+                                        <input type="date" class="form-control bg-dark text-light border-secondary" id="keyDateFrom">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="keyDateTo" class="form-label">Hasta</label>
+                                        <input type="date" class="form-control bg-dark text-light border-secondary" id="keyDateTo">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button class="btn btn-primary">Filtrar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tabla de claves -->
+                        <div class="card bg-dark border-secondary mb-4">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-dark table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Juego</th>
+                                                <th>Plataforma</th>
+                                                <th>Fecha</th>
+                                                <th>Pedido</th>
+                                                <th>Clave</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                        <span>Cyberpunk 2077</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">PC</span></td>
+                                                <td>15/06/2024</td>
+                                                <td><a href="#" data-bs-toggle="modal" data-bs-target="#orderDetailModal">#AG-2024-1234</a></td>
+                                                <td>
+                                                    <span class="text-muted">••••••••••••</span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#viewKeyModal">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#downloadKeyModal">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                        <span>Elden Ring</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">PC</span></td>
+                                                <td>15/06/2024</td>
+                                                <td><a href="#" data-bs-toggle="modal" data-bs-target="#orderDetailModal">#AG-2024-1234</a></td>
+                                                <td>
+                                                    <span class="text-muted">••••••••••••</span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#viewKeyModal">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#downloadKeyModal">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                        <span>Hogwarts Legacy</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">PC</span></td>
+                                                <td>02/06/2024</td>
+                                                <td><a href="#" data-bs-toggle="modal" data-bs-target="#orderDetailModal">#AG-2024-1233</a></td>
+                                                <td>
+                                                    <span class="text-muted">••••••••••••</span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#viewKeyModal">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#downloadKeyModal">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                        <span>Call of Duty: Modern Warfare III</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">PC</span></td>
+                                                <td>15/05/2024</td>
+                                                <td><a href="#" data-bs-toggle="modal" data-bs-target="#orderDetailModal">#AG-2024-1231</a></td>
+                                                <td>
+                                                    <span class="text-muted">••••••••••••</span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#viewKeyModal">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#downloadKeyModal">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                        <span>Assassin's Creed Valhalla</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">PC</span></td>
+                                                <td>02/05/2024</td>
+                                                <td><a href="#" data-bs-toggle="modal" data-bs-target="#orderDetailModal">#AG-2024-1230</a></td>
+                                                <td>
+                                                    <span class="text-muted">••••••••••••</span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#viewKeyModal">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#downloadKeyModal">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-dark border-secondary">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        
+                        <!-- Instrucciones de activación -->
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-header bg-dark border-secondary">
+                                <h5 class="mb-0">Instrucciones de activación</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="accordion" id="activationInstructions">
+                                    <div class="accordion-item bg-dark border-secondary">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <i class="fab fa-steam me-2"></i> Activación en Steam
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#activationInstructions">
+                                            <div class="accordion-body">
+                                                <ol>
+                                                    <li>Abre el cliente de Steam e inicia sesión en tu cuenta.</li>
+                                                    <li>Haz clic en "Juegos" en la barra de menú superior.</li>
+                                                    <li>Selecciona "Activar un producto en Steam..."</li>
+                                                    <li>Acepta los términos y condiciones.</li>
+                                                    <li>Introduce la clave del producto y haz clic en "Siguiente".</li>
+                                                    <li>El juego se añadirá a tu biblioteca y comenzará a descargarse.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item bg-dark border-secondary">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <i class="fab fa-playstation me-2"></i> Activación en PlayStation
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#activationInstructions">
+                                            <div class="accordion-body">
+                                                <ol>
+                                                    <li>Enciende tu consola PlayStation y accede a tu cuenta.</li>
+                                                    <li>Ve a la PlayStation Store.</li>
+                                                    <li>Desplázate hacia abajo y selecciona "Canjear códigos".</li>
+                                                    <li>Introduce la clave del producto y selecciona "Canjear".</li>
+                                                    <li>El juego se añadirá a tu biblioteca y podrás descargarlo.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item bg-dark border-secondary">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                <i class="fab fa-xbox me-2"></i> Activación en Xbox
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#activationInstructions">
+                                            <div class="accordion-body">
+                                                <ol>
+                                                    <li>Enciende tu consola Xbox y accede a tu cuenta.</li>
+                                                    <li>Pulsa el botón Xbox para abrir la guía.</li>
+                                                    <li>Ve a "Tienda" y selecciona "Canjear".</li>
+                                                    <li>Introduce la clave del producto y selecciona "Canjear".</li>
+                                                    <li>El juego se añadirá a tu biblioteca y podrás descargarlo.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item bg-dark border-secondary">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                <i class="fab fa-nintendo-switch me-2"></i> Activación en Nintendo Switch
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#activationInstructions">
+                                            <div class="accordion-body">
+                                                <ol>
+                                                    <li>Enciende tu Nintendo Switch y accede a tu cuenta.</li>
+                                                    <li>Ve a la Nintendo eShop.</li>
+                                                    <li>Selecciona tu cuenta en la esquina superior derecha.</li>
+                                                    <li>Desplázate hacia abajo y selecciona "Canjear código".</li>
+                                                    <li>Introduce la clave del producto y selecciona "Canjear".</li>
+                                                    <li>El juego se añadirá a tu biblioteca y podrás descargarlo.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mis Reseñas -->
+                    <div id="mis-resenas" class="tab-content">
+                        <h2 class="mb-4">Mis Reseñas</h2>
+                        
+                        <!-- Filtros -->
+                        <div class="card bg-dark border-secondary mb-4">
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="reviewRating" class="form-label">Calificación</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="reviewRating">
+                                            <option value="all">Todas</option>
+                                            <option value="5">5 estrellas</option>
+                                            <option value="4">4 estrellas</option>
+                                            <option value="3">3 estrellas</option>
+                                            <option value="2">2 estrellas</option>
+                                            <option value="1">1 estrella</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="reviewDateFrom" class="form-label">Desde</label>
+                                        <input type="date" class="form-control bg-dark text-light border-secondary" id="reviewDateFrom">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="reviewDateTo" class="form-label">Hasta</label>
+                                        <input type="date" class="form-control bg-dark text-light border-secondary" id="reviewDateTo">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button class="btn btn-primary">Filtrar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Lista de reseñas -->
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                <div>
+                                                    <h5 class="mb-0">Cyberpunk 2077</h5>
+                                                    <span class="badge bg-success">PC</span>
+                                                </div>
+                                            </div>
+                                            <div class="review-stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                        </div>
+                                        <h6>Excelente juego, pero con algunos bugs</h6>
+                                        <p class="mb-2">La historia es increíble y los gráficos son impresionantes. El mundo abierto está muy bien diseñado y hay mucho que hacer. Sin embargo, todavía hay algunos bugs menores que pueden afectar la experiencia. En general, muy recomendable.</p>
+                                        <small class="text-muted">Publicada el 16/06/2024</small>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal">
+                                                <i class="fas fa-edit me-1"></i>Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash me-1"></i>Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                <div>
+                                                    <h5 class="mb-0">Elden Ring</h5>
+                                                    <span class="badge bg-success">PC</span>
+                                                </div>
+                                            </div>
+                                            <div class="review-stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <h6>Obra maestra absoluta</h6>
+                                        <p class="mb-2">Uno de los mejores juegos que he jugado en mi vida. El mundo abierto es impresionante, el combate es desafiante pero justo, y la exploración es muy gratificante. La dirección artística es simplemente espectacular. Totalmente recomendado para los amantes de los juegos desafiantes.</p>
+                                        <small class="text-muted">Publicada el 16/06/2024</small>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal">
+                                                <i class="fas fa-edit me-1"></i>Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash me-1"></i>Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                <div>
+                                                    <h5 class="mb-0">Hogwarts Legacy</h5>
+                                                    <span class="badge bg-success">PC</span>
+                                                </div>
+                                            </div>
+                                            <div class="review-stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <h6>El sueño de todo fan de Harry Potter</h6>
+                                        <p class="mb-2">La ambientación es perfecta, te sientes realmente como un estudiante en Hogwarts. El sistema de magia es divertido y la historia es interesante. Algunas misiones secundarias son repetitivas, pero en general es una experiencia mágica que todo fan debería probar.</p>
+                                        <small class="text-muted">Publicada el 03/06/2024</small>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal">
+                                                <i class="fas fa-edit me-1"></i>Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash me-1"></i>Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark border-secondary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                                <div>
+                                                    <h5 class="mb-0">Call of Duty: Modern Warfare III</h5>
+                                                    <span class="badge bg-success">PC</span>
+                                                </div>
+                                            </div>
+                                            <div class="review-stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <h6>Decepcionante para la franquicia</h6>
+                                        <p class="mb-2">La campaña es demasiado corta y no aporta nada nuevo. El multijugador sigue siendo divertido, pero es prácticamente lo mismo que el anterior. Los gráficos son buenos, pero esperaba más innovación para una nueva entrega. Solo recomendable para fans acérrimos de la saga.</p>
+                                        <small class="text-muted">Publicada el 16/05/2024</small>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0">
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal">
+                                                <i class="fas fa-edit me-1"></i>Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash me-1"></i>Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    
+                    <!-- Editar Perfil -->
+                    <div id="editar-perfil" class="tab-content">
+                        <h2 class="mb-4">Editar Perfil</h2>
+                        
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <!-- Formulario de información personal -->
+                                <div class="card bg-dark border-secondary mb-4">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Información Personal</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="firstName" class="form-label">Nombre</label>
+                                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="firstName" value="Daniel">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="lastName" class="form-label">Apellido</label>
+                                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="lastName" value="San Martín">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Correo electrónico</label>
+                                                <input type="email" class="form-control bg-dark text-light border-secondary" id="email" value="daniel.sanmartin@ejemplo.com">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">Teléfono</label>
+                                                <input type="tel" class="form-control bg-dark text-light border-secondary" id="phone" value="+56 9 1234 5678">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="birthdate" class="form-label">Fecha de nacimiento</label>
+                                                <input type="date" class="form-control bg-dark text-light border-secondary" id="birthdate" value="1990-05-15">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="bio" class="form-label">Biografía</label>
+                                                <textarea class="form-control bg-dark text-light border-secondary" id="bio" rows="3">Gamer apasionado desde los 8 años. Fan de los RPG y juegos de mundo abierto. Coleccionista de ediciones especiales.</textarea>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <!-- Formulario de cambio de contraseña -->
+                                <div class="card bg-dark border-secondary mb-4">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Cambiar Contraseña</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="currentPassword" class="form-label">Contraseña actual</label>
+                                                <input type="password" class="form-control bg-dark text-light border-secondary" id="currentPassword">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">Nueva contraseña</label>
+                                                <input type="password" class="form-control bg-dark text-light border-secondary" id="newPassword">
+                                                <div class="form-text text-muted">La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y símbolos.</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="confirmPassword" class="form-label">Confirmar nueva contraseña</label>
+                                                <input type="password" class="form-control bg-dark text-light border-secondary" id="confirmPassword">
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <!-- Preferencias de notificaciones -->
+                                <div class="card bg-dark border-secondary mb-4">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Preferencias de Notificaciones</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="emailOffers" checked>
+                                                    <label class="form-check-label" for="emailOffers">Recibir ofertas por correo electrónico</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="emailNewsletter" checked>
+                                                    <label class="form-check-label" for="emailNewsletter">Suscribirse al boletín semanal</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="emailOrderUpdates" checked>
+                                                    <label class="form-check-label" for="emailOrderUpdates">Actualizaciones de pedidos</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="emailWishlist">
+                                                    <label class="form-check-label" for="emailWishlist">Notificaciones de cambios de precio en lista de deseos</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="emailReviews">
+                                                    <label class="form-check-label" for="emailReviews">Respuestas a mis reseñas</label>
+                                                </div>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Guardar preferencias</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <!-- Preferencias de privacidad -->
+                                <div class="card bg-dark border-secondary">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Privacidad</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="showActivity" checked>
+                                                    <label class="form-check-label" for="showActivity">Mostrar mi actividad de juego</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="showWishlist" checked>
+                                                    <label class="form-check-label" for="showWishlist">Hacer pública mi lista de deseos</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="showReviews" checked>
+                                                    <label class="form-check-label" for="showReviews">Mostrar mis reseñas públicamente</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="allowDataCollection">
+                                                    <label class="form-check-label" for="allowDataCollection">Permitir recopilación de datos para mejorar recomendaciones</label>
+                                                </div>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Guardar configuración</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <!-- Foto de perfil -->
+                                <div class="card bg-dark border-secondary mb-4">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Foto de Perfil</h5>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <img src="https://placehold.co/150x150?text=User" class="user-avatar mb-3" alt="User Avatar">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-upload me-2"></i>Subir nueva foto
+                                            </button>
+                                            <button class="btn btn-outline-danger">
+                                                <i class="fas fa-trash me-2"></i>Eliminar foto
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Plataformas vinculadas -->
+                                <div class="card bg-dark border-secondary mb-4">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Plataformas Vinculadas</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fab fa-steam fa-2x me-3"></i>
+                                                <span>Steam</span>
+                                            </div>
+                                            <button class="btn btn-sm btn-success">Vinculada</button>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fab fa-playstation fa-2x me-3"></i>
+                                                <span>PlayStation</span>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary">Vincular</button>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fab fa-xbox fa-2x me-3"></i>
+                                                <span>Xbox</span>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary">Vincular</button>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fab fa-discord fa-2x me-3"></i>
+                                                <span>Discord</span>
+                                            </div>
+                                            <button class="btn btn-sm btn-success">Vinculada</button>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fab fa-twitch fa-2x me-3"></i>
+                                                <span>Twitch</span>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary">Vincular</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Eliminar cuenta -->
+                                <div class="card bg-dark border-secondary">
+                                    <div class="card-header bg-dark border-secondary">
+                                        <h5 class="mb-0">Eliminar Cuenta</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="text-danger">¡Advertencia! La eliminación de la cuenta es permanente y no se puede deshacer. Perderás acceso a todos tus juegos, claves, historial de compras y datos personales.</p>
+                                        <div class="d-grid">
+                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>Eliminar mi cuenta
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modales -->
+    <!-- Modal de detalles de pedido -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="orderDetailModalLabel">Detalles del Pedido #AG-2024-1234</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Información del Pedido</h6>
+                            <p class="mb-1"><strong>Fecha:</strong> 15/06/2024</p>
+                            <p class="mb-1"><strong>Estado:</strong> <span class="badge bg-success">Completado</span></p>
+                            <p class="mb-1"><strong>Método de pago:</strong> WebPay (Tarjeta de crédito)</p>
+                            <p class="mb-1"><strong>Total:</strong> $38.780</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Información de Facturación</h6>
+                            <p class="mb-1"><strong>Nombre:</strong> Daniel San Martín</p>
+                            <p class="mb-1"><strong>Email:</strong> daniel.sanmartin@ejemplo.com</p>
+                            <p class="mb-1"><strong>RUT:</strong> 12.345.678-9</p>
+                        </div>
+                    </div>
+                    
+                    <h6>Productos</h6>
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Plataforma</th>
+                                    <th>Precio</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                            <span>Cyberpunk 2077</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-success">PC</span></td>
+                                    <td>$13.790</td>
+                                    <td><span class="badge bg-success">Entregado</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://placehold.co/60x30?text=Game" class="me-2" alt="Game">
+                                            <span>Elden Ring</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-success">PC</span></td>
+                                    <td>$24.990</td>
+                                    <td><span class="badge bg-success">Entregado</span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td><strong>Total</strong></td>
+                                    <td><strong>$38.780</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i>Descargar factura
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver clave -->
+    <div class="modal fade" id="viewKeyModal" tabindex="-1" aria-labelledby="viewKeyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="viewKeyModalLabel">Clave de Activación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-4">
+                        <img src="https://placehold.co/100x50?text=Game" class="mb-3" alt="Game">
+                        <h5>Cyberpunk 2077</h5>
+                        <span class="badge bg-success">PC</span>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Esta clave es personal y no debe ser compartida. Solo se puede activar una vez.
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control bg-dark text-light border-secondary" value="XXXX-XXXX-XXXX-XXXX-XXXX" id="gameKey" readonly>
+                        <button class="btn btn-outline-light" type="button" onclick="copyToClipboard('gameKey')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <small class="text-muted">Pedido #AG-2024-1234 • Comprado el 15/06/2024</small>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i>Descargar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para descargar clave -->
+    <div class="modal fade" id="downloadKeyModal" tabindex="-1" aria-labelledby="downloadKeyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="downloadKeyModalLabel">Descargar Clave</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-4">
+                        <img src="https://placehold.co/100x50?text=Game" class="mb-3" alt="Game">
+                        <h5>Cyberpunk 2077</h5>
+                        <span class="badge bg-success">PC</span>
+                    </div>
+                    <p>Selecciona el formato en el que deseas descargar tu clave de activación:</p>
+                    <div class="d-flex justify-content-center gap-3 mb-3">
+                        <button class="btn btn-outline-light">
+                            <i class="fas fa-file-pdf fa-2x d-block mb-2"></i>
+                            PDF
+                        </button>
+                        <button class="btn btn-outline-light">
+                            <i class="fas fa-file-image fa-2x d-block mb-2"></i>
+                            Imagen
+                        </button>
+                        <button class="btn btn-outline-light">
+                            <i class="fas fa-file-alt fa-2x d-block mb-2"></i>
+                            Texto
+                        </button>
+                    </div>
+                    <small class="text-muted">Pedido #AG-2024-1234 • Comprado el 15/06/2024</small>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar reseña -->
+    <div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="editReviewModalLabel">Editar Reseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 text-center">
+                        <img src="https://placehold.co/100x50?text=Game" class="mb-2" alt="Game">
+                        <h5>Cyberpunk 2077</h5>
+                        <span class="badge bg-success">PC</span>
+                    </div>
+                    <form>
+                        <div class="mb-3 text-center">
+                            <label class="form-label">Calificación</label>
+                            <div class="rating-input">
+                                <i class="fas fa-star fa-2x mx-1 review-stars" data-rating="1"></i>
+                                <i class="fas fa-star fa-2x mx-1 review-stars" data-rating="2"></i>
+                                <i class="fas fa-star fa-2x mx-1 review-stars" data-rating="3"></i>
+                                <i class="fas fa-star fa-2x mx-1 review-stars" data-rating="4"></i>
+                                <i class="fas fa-star-half-alt fa-2x mx-1 review-stars" data-rating="5"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reviewTitle" class="form-label">Título</label>
+                            <input type="text" class="form-control bg-dark text-light border-secondary" id="reviewTitle" value="Excelente juego, pero con algunos bugs">
+                        </div>
+                        <div class="mb-3">
+                            <label for="reviewContent" class="form-label">Reseña</label>
+                            <textarea class="form-control bg-dark text-light border-secondary" id="reviewContent" rows="5">La historia es increíble y los gráficos son impresionantes. El mundo abierto está muy bien diseñado y hay mucho que hacer. Sin embargo, todavía hay algunos bugs menores que pueden afectar la experiencia. En general, muy recomendable.</textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar cuenta -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Eliminar Cuenta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle fa-2x float-start me-3"></i>
+                        <strong>¡Esta acción es irreversible!</strong> Al eliminar tu cuenta, perderás acceso a:
+                    </div>
+                    <ul class="text-danger">
+                        <li>Todos tus juegos comprados</li>
+                        <li>Claves de activación</li>
+                        <li>Historial de compras</li>
+                        <li>Lista de deseos</li>
+                        <li>Reseñas y valoraciones</li>
+                        <li>Datos personales y preferencias</li>
+                    </ul>
+                    <p>Para confirmar la eliminación de tu cuenta, escribe "ELIMINAR" en el campo a continuación:</p>
+                    <div class="mb-3">
+                        <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="ELIMINAR">
+                    </div>
+                    <div class="mb-3">
+                        <label for="deleteReason" class="form-label">¿Por qué deseas eliminar tu cuenta? (opcional)</label>
+                        <select class="form-select bg-dark text-light border-secondary" id="deleteReason">
+                            <option value="">Selecciona una razón</option>
+                            <option value="privacy">Preocupaciones de privacidad</option>
+                            <option value="experience">Mala experiencia con el servicio</option>
+                            <option value="unused">Ya no uso la plataforma</option>
+                            <option value="alternative">Uso otra plataforma</option>
+                            <option value="other">Otra razón</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deleteComment" class="form-label">Comentarios adicionales (opcional)</label>
+                        <textarea class="form-control bg-dark text-light border-secondary" id="deleteComment" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger">Eliminar permanentemente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incluir el footer -->
+    <div data-include="includes/footer.html"></div>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="btn btn-primary position-fixed bottom-0 end-0 m-4 rounded-circle" id="backToTop" style="width: 50px; height: 50px; display: none; align-items: center; justify-content: center; z-index: 1000;">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar la primera pestaña por defecto
+            document.getElementById('mis-pedidos').style.display = 'block';
+            document.querySelector('.sidebar-link[data-target="mis-pedidos"]').classList.add('active');
+            
+            // Manejar clics en los enlaces de la barra lateral
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Ocultar todas las pestañas
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(tab => {
+                        tab.style.display = 'none';
+                    });
+                    
+                    // Remover clase activa de todos los enlaces
+                    sidebarLinks.forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    
+                    // Mostrar la pestaña seleccionada
+                    const targetTab = this.getAttribute('data-target');
+                    document.getElementById(targetTab).style.display = 'block';
+                    
+                    // Añadir clase activa al enlace seleccionado
+                    this.classList.add('active');
+                });
+            });
+            
+            // Función para copiar al portapapeles
+            window.copyToClipboard = function(elementId) {
+                const element = document.getElementById(elementId);
+                element.select();
+                document.execCommand('copy');
+                
+                // Mostrar notificación
+                const notification = document.createElement('div');
+                notification.className = 'position-fixed bottom-0 end-0 p-3 m-4 bg-success text-white rounded';
+                notification.style.zIndex = '1060';
+                notification.style.maxWidth = '300px';
+                notification.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <div>
+                            <strong>¡Copiado!</strong>
+                            <p class="mb-0">La clave ha sido copiada al portapapeles.</p>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transition = 'opacity 0.5s';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 500);
+                }, 3000);
+            };
+            
+            // Manejar estrellas de calificación
+            const ratingStars = document.querySelectorAll('.rating-input i');
+            ratingStars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = this.getAttribute('data-rating');
+                    highlightStars(rating);
+                });
+                
+                star.addEventListener('mouseout', function() {
+                    resetStars();
+                });
+                
+                star.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    setRating(rating);
+                });
+            });
+            
+            function highlightStars(rating) {
+                ratingStars.forEach(star => {
+                    const starRating = star.getAttribute('data-rating');
+                    if (starRating <= rating) {
+                        if (starRating == rating && rating % 1 != 0) {
+                            star.className = 'fas fa-star-half-alt fa-2x mx-1 review-stars';
+                        } else {
+                            star.className = 'fas fa-star fa-2x mx-1 review-stars';
+                        }
+                    } else {
+                        star.className = 'far fa-star fa-2x mx-1 review-stars';
+                    }
+                });
+            }
+            
+            function resetStars() {
+                ratingStars.forEach((star, index) => {
+                    if (index < 4) {
+                        star.className = 'fas fa-star fa-2x mx-1 review-stars';
+                    } else {
+                        star.className = 'fas fa-star-half-alt fa-2x mx-1 review-stars';
+                    }
+                });
+            }
+            
+            function setRating(rating) {
+                // Aquí puedes guardar la calificación seleccionada
+                console.log('Calificación seleccionada:', rating);
+            }
+        });
+    </script>
+</body>
+</html>

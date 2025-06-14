@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ producto.nombre }} - Ahorrito Gaming{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mb-4">
+        {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow-lg" alt="{{ producto.nombre }}">
+        {% else %}
+            <img src="https://placehold.co/600x400/1e1e1e/7b4cff?text=Sin+Imagen" class="img-fluid rounded shadow-lg" alt="Imagen no disponible">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1>{{ producto.nombre }}</h1>
+        <p class="lead text-muted">{{ producto.categoria.nombre }}</p>
+        <hr class="border-secondary">
+        <p>{{ producto.descripcion }}</p>
+        <p><strong>Stock disponible:</strong> {{ producto.stock }} unidades</p>
+        <h2 class="text-primary my-4">${{ producto.precio }}</h2>
+        <div class="d-grid gap-2 mt-4">
+    <a href="{% url 'cart:add_to_cart' producto.id %}" class="btn btn-primary btn-lg">
+        <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
+    </a>
+    <a href="{% url 'index' %}" class="btn btn-outline-light">
+        <i class="fas fa-arrow-left me-2"></i>Volver a la tienda
+    </a>
+</div>
+    </div>
+</div>
+{% endblock %}

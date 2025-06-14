@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reseñas y Valoraciones - Ahorrito Gaming</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .review-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .verified-badge {
+            background-color: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        .review-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .review-rating {
+            margin: 10px 0;
+        }
+        
+        .review-content {
+            padding: 15px;
+        }
+        
+        .review-photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .review-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .review-photo:hover {
+            transform: scale(1.05);
+        }
+        
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-top: 1px solid #333;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .review-footer button {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .review-footer button:hover {
+            color: var(--primary);
+        }
+        
+        .review-form {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .star-rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        
+        .star-rating-input input {
+            display: none;
+        }
+        
+        .star-rating-input label {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #555;
+            padding: 0 5px;
+        }
+        
+        .star-rating-input label:hover,
+        .star-rating-input label:hover ~ label,
+        .star-rating-input input:checked ~ label {
+            color: #FFD700;
+        }
+        
+        .photo-upload-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .photo-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .photo-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-preview-item .remove-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .filter-section {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .rating-label {
+            width: 30px;
+            margin-right: 10px;
+        }
+        
+        .rating-progress {
+            flex-grow: 1;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        
+        .rating-progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+        }
+        
+        .rating-count {
+            width: 40px;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <!-- Incluir el menú -->
+    <div data-include="includes/menu.html"></div>
+
+    <!-- Breadcrumb -->
+    <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="producto.html" class="text-decoration-none">Cyberpunk 2077</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Reseñas y Valoraciones</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Product Header -->
+    <section class="container mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <img src="https://placehold.co/300x150?text=Game+Cover" class="img-fluid rounded" alt="Cyberpunk 2077">
+            </div>
+            <div class="col-md-10">
+                <h1 class="mb-2">Reseñas y Valoraciones: Cyberpunk 2077</h1>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="star-rating me-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="fw-bold">4.5/5</span>
+                    <span class="ms-2 text-muted">(256 valoraciones)</span>
+                </div>
+                <p class="lead">Descubre lo que opinan otros jugadores sobre este título y comparte tu experiencia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="container mb-5">
+        <div class="row">
+            <!-- Left Column: Filters and Stats -->
+            <div class="col-lg-3">
+                <!-- Rating Statistics -->
+                <div class="stats-card">
+                    <h5 class="mb-3">Valoración general</h5>
+                    <div class="text-center mb-3">
+                        <span class="display-4 fw-bold">4.5</span>
+                        <div class="star-rating my-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="text-muted">256 valoraciones</p>
+                    </div>
+                    
+                    <div class="rating-distribution">
+                        <div class="rating-bar">
+                            <div class="rating-label">5★</div>
+                            <div class="rating-progress">
+                                <div class="rating-progress-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="rating-count">167</div>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-label">4★</div>
+                            <div class="rating-progress">
+                                <div class="rating-progress-fill" style="width: 20%"></div>
+                            </div>
+                            <div class="rating-count">51</div>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-label">3★</div>
+                            <div class="rating-progress">
+                                <div class="rating-progress-fill" style="width: 10%"></div>
+                            </div>
+                            <div class="rating-count">26</div>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-label">2★</div>
+                            <div class="rating-progress">
+                                <div class="rating-progress-fill" style="width: 3%"></div>
+                            </div>
+                            <div class="rating-count">8</div>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-label">1★</div>
+                            <div class="rating-progress">
+                                <div class="rating-progress-fill" style="width: 2%"></div>
+                            </div>
+                            <div class="rating-count">4</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filters -->
+                <div class="filter-section">
+                    <h5 class="mb-3">Filtrar reseñas</h5>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Por valoración</label>
+                        <select class="form-select bg-dark text-light border-secondary">
+                            <option selected>Todas las valoraciones</option>
+                            <option>5 estrellas</option>
+                            <option>4 estrellas</option>
+                            <option>3 estrellas</option>
+                            <option>2 estrellas</option>
+                            <option>1 estrella</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Ordenar por</label>
+                        <select class="form-select bg-dark text-light border-secondary">
+                            <option selected>Más recientes</option>
+                            <option>Más antiguos</option>
+                            <option>Mejor valorados</option>
+                            <option>Peor valorados</option>
+                            <option>Con fotos primero</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="verifiedOnly">
+                        <label class="form-check-label" for="verifiedOnly">
+                            Solo compras verificadas
+                        </label>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="withPhotos">
+                        <label class="form-check-label" for="withPhotos">
+                            Solo con fotos
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button class="btn btn-primary">Aplicar filtros</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Reviews and Form -->
+            <div class="col-lg-9">
+                <!-- Write Review Form -->
+                <div class="review-form mb-4">
+                    <h4 class="mb-3">Escribe tu reseña</h4>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Tu valoración</label>
+                            <div class="star-rating-input">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="reviewTitle" class="form-label">Título de tu reseña</label>
+                            <input type="text" class="form-control bg-dark text-light border-secondary" id="reviewTitle" placeholder="Resumen de tu experiencia">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="reviewContent" class="form-label">Tu reseña</label>
+                            <textarea class="form-control bg-dark text-light border-secondary" id="reviewContent" rows="4" placeholder="Comparte tu experiencia con este juego..."></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Sube fotos (opcional)</label>
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control bg-dark text-light border-secondary" id="photoUpload" multiple accept="image/*">
+                                <button class="btn btn-outline-secondary" type="button">Subir</button>
+                            </div>
+                            <div class="photo-upload-preview">
+                                <div class="photo-preview-item">
+                                    <img src="https://placehold.co/100x100?text=Preview" alt="Preview">
+                                    <button class="remove-photo"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="photo-preview-item">
+                                    <img src="https://placehold.co/100x100?text=Preview" alt="Preview">
+                                    <button class="remove-photo"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <small class="text-muted">Puedes subir hasta 5 fotos (máx. 5MB cada una)</small>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Publicar reseña</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Reviews List -->
+                <h4 class="mb-3">Reseñas de usuarios (256)</h4>
+                
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar" alt="Avatar">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0">Carlos Rodríguez</h5>
+                                <span class="verified-badge">Compra verificada</span>
+                            </div>
+                            <div class="review-date">15 de junio, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <div class="review-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <h5 class="review-title">Una obra maestra con algunos fallos</h5>
+                        <p>Después de las actualizaciones, Cyberpunk 2077 se ha convertido en el juego que todos esperábamos. Night City es impresionante, la historia es cautivadora y los personajes están muy bien desarrollados. Todavía hay algunos bugs menores, pero nada que arruine la experiencia. Totalmente recomendado para los fans de los RPG y la ciencia ficción.</p>
+                        <div class="review-photos">
+                            <img src="https://placehold.co/100x100?text=Photo+1" class="review-photo" alt="User photo">
+                            <img src="https://placehold.co/100x100?text=Photo+2" class="review-photo" alt="User photo">
+                            <img src="https://placehold.co/100x100?text=Photo+3" class="review-photo" alt="User photo">
+                        </div>
+                    </div>
+                    <div class="review-footer">
+                        <div>
+                            <button><i class="far fa-thumbs-up me-1"></i> Útil (24)</button>
+                            <button class="ms-3"><i class="far fa-comment me-1"></i> Comentar</button>
+                        </div>
+                        <button><i class="far fa-flag me-1"></i> Reportar</button>
+                    </div>
+                </div>
+                
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar" alt="Avatar">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0">Laura Martínez</h5>
+                                <span class="verified-badge">Compra verificada</span>
+                            </div>
+                            <div class="review-date">2 de junio, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <div class="review-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                        </div>
+                        <h5 class="review-title">Excelente juego, pero aún tiene problemas</h5>
+                        <p>La historia y los personajes son increíbles, especialmente la relación con Johnny Silverhand. El diseño de Night City es impresionante y los detalles son asombrosos. Sin embargo, todavía hay algunos problemas de rendimiento en mi PC. A pesar de eso, es una experiencia que todo jugador debería probar.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div>
+                            <button><i class="far fa-thumbs-up me-1"></i> Útil (17)</button>
+                            <button class="ms-3"><i class="far fa-comment me-1"></i> Comentar</button>
+                        </div>
+                        <button><i class="far fa-flag me-1"></i> Reportar</button>
+                    </div>
+                </div>
+                
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar" alt="Avatar">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0">Miguel Ángel Soto</h5>
+                                <span class="verified-badge">Compra verificada</span>
+                            </div>
+                            <div class="review-date">28 de mayo, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <div class="review-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                        </div>
+                        <h5 class="review-title">Bueno, pero no cumple todas las expectativas</h5>
+                        <p>El juego tiene una buena historia y gráficos impresionantes, pero siento que muchas de las características prometidas no están presentes. El sistema de vida en la ciudad no es tan dinámico como esperaba y las decisiones no parecen tener tanto impacto. Aun así, es entretenido y vale la pena jugarlo, especialmente con el descuento actual.</p>
+                        <div class="review-photos">
+                            <img src="https://placehold.co/100x100?text=Photo+1" class="review-photo" alt="User photo">
+                            <img src="https://placehold.co/100x100?text=Photo+2" class="review-photo" alt="User photo">
+                        </div>
+                    </div>
+                    <div class="review-footer">
+                        <div>
+                            <button><i class="far fa-thumbs-up me-1"></i> Útil (9)</button>
+                            <button class="ms-3"><i class="far fa-comment me-1"></i> Comentar</button>
+                        </div>
+                        <button><i class="far fa-flag me-1"></i> Reportar</button>
+                    </div>
+                </div>
+                
+                <!-- Review 4 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar" alt="Avatar">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0">Ana Gómez</h5>
+                                <span class="verified-badge">Compra verificada</span>
+                            </div>
+                            <div class="review-date">15 de mayo, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <div class="review-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <h5 class="review-title">¡Simplemente increíble!</h5>
+                        <p>Después de la actualización 2.0 y la expansión Phantom Liberty, este juego es una obra maestra. La historia principal es emocionante, las misiones secundarias están llenas de detalles y los personajes son memorables. El sistema de combate es divertido y ofrece muchas opciones para diferentes estilos de juego. Night City es el mundo abierto más detallado que he visto. ¡100% recomendado!</p>
+                        <div class="review-photos">
+                            <img src="https://placehold.co/100x100?text=Photo+1" class="review-photo" alt="User photo">
+                            <img src="https://placehold.co/100x100?text=Photo+2" class="review-photo" alt="User photo">
+                            <img src="https://placehold.co/100x100?text=Photo+3" class="review-photo" alt="User photo">
+                            <img src="https://placehold.co/100x100?text=Photo+4" class="review-photo" alt="User photo">
+                        </div>
+                    </div>
+                    <div class="review-footer">
+                        <div>
+                            <button><i class="far fa-thumbs-up me-1"></i> Útil (32)</button>
+                            <button class="ms-3"><i class="far fa-comment me-1"></i> Comentar</button>
+                        </div>
+                        <button><i class="far fa-flag me-1"></i> Reportar</button>
+                    </div>
+                </div>
+                
+                <!-- Review 5 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar" alt="Avatar">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0">Javier Morales</h5>
+                                <span class="verified-badge">Compra verificada</span>
+                            </div>
+                            <div class="review-date">2 de mayo, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <div class="review-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                        </div>
+                        <h5 class="review-title">Decepcionante incluso después de las actualizaciones</h5>
+                        <p>A pesar de todas las actualizaciones, el juego sigue sin cumplir lo que prometió. La IA de los NPCs es terrible, la policía aparece de la nada y las opciones de personalización son limitadas. La historia es lo único que salva al juego, pero no es suficiente para justificar la compra a precio completo. Esperen a una oferta mayor.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div>
+                            <button><i class="far fa-thumbs-up me-1"></i> Útil (7)</button>
+                            <button class="ms-3"><i class="far fa-comment me-1"></i> Comentar</button>
+                        </div>
+                        <button><i class="far fa-flag me-1"></i> Reportar</button>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="Review pagination" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Modal -->
+    <div class="modal fade" id="reviewPhotoModal" tabindex="-1" aria-labelledby="reviewPhotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="reviewPhotoModalLabel">Fotos de la reseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="https://placehold.co/800x600?text=Full+Size+Photo" class="img-fluid rounded" alt="Full size photo">
+                </div>
+                <div class="modal-footer border-secondary">
+                    <div class="d-flex justify-content-between w-100">
+                        <button type="button" class="btn btn-outline-light">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </button>
+                        <span class="align-self-center">1 de 4</span>
+                        <button type="button" class="btn btn-outline-light">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="reportModalLabel">Reportar reseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Motivo del reporte</label>
+                            <select class="form-select bg-dark text-light border-secondary">
+                                <option selected>Selecciona un motivo</option>
+                                <option>Contenido ofensivo o inapropiado</option>
+                                <option>Spam o publicidad</option>
+                                <option>Información falsa</option>
+                                <option>Spoilers sin advertencia</option>
+                                <option>No relacionado con el producto</option>
+                                <option>Otro motivo</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reportDetails" class="form-label">Detalles adicionales (opcional)</label>
+                            <textarea class="form-control bg-dark text-light border-secondary" id="reportDetails" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger">Enviar reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="commentModalLabel">Comentar reseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="d-flex align-items-start mb-3">
+                            <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar me-2" alt="Avatar" style="width: 40px; height: 40px;">
+                            <div class="p-2 bg-secondary bg-opacity-25 rounded w-100">
+                                <div class="d-flex justify-content-between">
+                                    <strong>Carlos Rodríguez</strong>
+                                    <small class="text-muted">15 de junio, 2024</small>
+                                </div>
+                                <p class="mb-0">Una obra maestra con algunos fallos</p>
+                            </div>
+                        </div>
+                        
+                        <label for="commentText" class="form-label">Tu comentario</label>
+                        <textarea class="form-control bg-dark text-light border-secondary" id="commentText" rows="3" placeholder="Escribe tu comentario..."></textarea>
+                    </div>
+                    
+                    <h6 class="mt-4 mb-3">Comentarios existentes (3)</h6>
+                    
+                    <div class="comment-list">
+                        <div class="d-flex mb-3">
+                            <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar me-2" alt="Avatar" style="width: 30px; height: 30px;">
+                            <div class="p-2 bg-secondary bg-opacity-10 rounded w-100">
+                                <div class="d-flex justify-content-between">
+                                    <strong>María López</strong>
+                                    <small class="text-muted">16 de junio, 2024</small>
+                                </div>
+                                <p class="mb-0">Totalmente de acuerdo. Los gráficos son impresionantes, especialmente con RTX activado.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-3">
+                            <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar me-2" alt="Avatar" style="width: 30px; height: 30px;">
+                            <div class="p-2 bg-secondary bg-opacity-10 rounded w-100">
+                                <div class="d-flex justify-content-between">
+                                    <strong>Pedro Sánchez</strong>
+                                    <small class="text-muted">16 de junio, 2024</small>
+                                </div>
+                                <p class="mb-0">¿Qué configuración de PC usaste? Estoy pensando en comprarlo pero no sé si mi PC podrá con él.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-3">
+                            <img src="https://placehold.co/50x50?text=User" class="reviewer-avatar me-2" alt="Avatar" style="width: 30px; height: 30px;">
+                            <div class="p-2 bg-secondary bg-opacity-10 rounded w-100">
+                                <div class="d-flex justify-content-between">
+                                    <strong>Carlos Rodríguez</strong>
+                                    <small class="text-muted">17 de junio, 2024</small>
+                                </div>
+                                <p class="mb-0">@Pedro Tengo una RTX 3070, Ryzen 5 5600X y 32GB de RAM. Corre muy bien a 1440p con DLSS en calidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Publicar comentario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-include="includes/footer.html"></div>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="btn btn-primary position-fixed bottom-0 end-0 m-4 rounded-circle" id="backToTop" style="width: 50px; height: 50px; display: none; align-items: center; justify-content: center; z-index: 1000;">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load includes
+            const includes = document.querySelectorAll('[data-include]');
+            includes.forEach(element => {
+                const file = element.getAttribute('data-include');
+                fetch(file)
+                    .then(response => response.text())
+                    .then(data => {
+                        element.innerHTML = data;
+                        
+                        // Re-initialize any scripts that might be in the included content
+                        const scripts = element.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            if (script.src) {
+                                newScript.src = script.src;
+                            } else {
+                                newScript.textContent = script.textContent;
+                            }
+                            document.body.appendChild(newScript);
+                            script.remove();
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading include:', error);
+                        element.innerHTML = 'Error loading content';
+                    });
+            });
+            
+            // Photo upload preview
+            const photoUpload = document.getElementById('photoUpload');
+            if (photoUpload) {
+                photoUpload.addEventListener('change', function() {
+                    // This would normally handle file uploads and previews
+                    console.log('Files selected:', this.files);
+                });
+            }
+            
+            // Review photo modal
+            const reviewPhotos = document.querySelectorAll('.review-photo');
+            reviewPhotos.forEach(photo => {
+                photo.addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(document.getElementById('reviewPhotoModal'));
+                    modal.show();
+                });
+            });
+            
+            // Report button
+            const reportButtons = document.querySelectorAll('.review-footer button:last-child');
+            reportButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                    modal.show();
+                });
+            });
+            
+            // Comment button
+            const commentButtons = document.querySelectorAll('.review-footer button:nth-child(1) button:nth-child(2)');
+            document.querySelectorAll('.fa-comment').forEach(icon => {
+                icon.closest('button').addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(document.getElementById('commentModal'));
+                    modal.show();
+                });
+            });
+            
+            // Helpful button
+            document.querySelectorAll('.fa-thumbs-up').forEach(icon => {
+                icon.closest('button').addEventListener('click', function() {
+                    const currentText = this.textContent.trim();
+                    const count = parseInt(currentText.match(/\d+/)[0]);
+                    this.innerHTML = `<i class="fas fa-thumbs-up me-1"></i> Útil (${count + 1})`;
+                    this.classList.add('text-primary');
+                });
+            });
+            
+            // Star rating input
+            const starLabels = document.querySelectorAll('.star-rating-input label');
+            starLabels.forEach(label => {
+                label.addEventListener('mouseover', function() {
+                    // Reset all stars
+                    starLabels.forEach(l => l.style.color = '#555');
+                    
+                    // Highlight current star and all stars before it
+                    let current = this;
+                    while (current) {
+                        current.style.color = '#FFD700';
+                        current = current.nextElementSibling;
+                    }
+                });
+                
+                label.addEventListener('mouseout', function() {
+                    // Reset stars if no rating is selected
+                    const checkedInput = document.querySelector('.star-rating-input input:checked');
+                    if (!checkedInput) {
+                        starLabels.forEach(l => l.style.color = '#555');
+                    } else {
+                        // Reset all stars
+                        starLabels.forEach(l => l.style.color = '#555');
+                        
+                        // Highlight stars based on selected rating
+                        const rating = parseInt(checkedInput.value);
+                        let count = 0;
+                        let current = document.querySelector(`label[for="star${rating}"]`);
+                        while (current && count < rating) {
+                            current.style.color = '#FFD700';
+                            current = current.nextElementSibling;
+                            count++;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

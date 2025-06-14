@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tu tienda de juegos digitales en Chile{% endblock %}
+
+{% block content %}
+    <section class="hero text-center mb-5">
+        <div class="container">
+            <h1 class="display-4 mb-4">Juegos digitales al mejor precio en Chile</h1>
+            <p class="lead mb-5">Más de 10.000 juegos para todas las plataformas con entrega instantánea</p>
+            <div class="d-flex justify-content-center">
+                <a href="#" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-shopping-cart me-2"></i>Explorar juegos
+                </a>
+                <a href="#" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-tag me-2"></i>Ver ofertas
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="text-center mb-4">Nuestros Productos</h2>
+        <div class="row g-4">
+
+            {% for producto in productos %}
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 bg-dark text-white">
+                    
+                    {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                    {% else %}
+                        <img src="https://placehold.co/300x200/1e1e1e/7b4cff?text=Sin+Imagen" class="card-img-top" alt="Imagen no disponible">
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ producto.nombre }}</h5>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <span class="game-price">${{ producto.precio }}</span>
+                            <span class="badge bg-primary">{{ producto.categoria.nombre }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-grid">
+                            <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-primary">Ver Producto</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+{% endblock %}

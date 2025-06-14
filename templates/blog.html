@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Ahorrito Gaming</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+         <!-- Incluir el menú -->
+         <div data-include="includes/menu.html"></div>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <h1 class="mb-4">Blog de Ahorrito Gaming</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control search-bar" placeholder="Buscar artículos...">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select search-bar">
+                    <option selected>Todas las categorías</option>
+                    <option>Noticias</option>
+                    <option>Guías</option>
+                    <option>Reviews</option>
+                    <option>Ofertas</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Artículo destacado -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="https://placehold.co/800x600?text=Blog+Featured" class="img-fluid rounded-start h-100" alt="Artículo destacado">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <span class="badge bg-primary mb-2">Destacado</span>
+                                <h3 class="card-title">Los 10 juegos más esperados de 2025</h3>
+                                <p class="text-muted">15 de junio, 2024 | Por: Admin</p>
+                                <p class="card-text">Un vistazo a los lanzamientos más esperados del próximo año que no te puedes perder. Desde secuelas de franquicias populares hasta nuevas IPs prometedoras, el 2025 promete ser un año excepcional para los gamers.</p>
+                                <a href="#" class="btn btn-primary">Leer más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Artículos del blog -->
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="https://placehold.co/800x400?text=Blog+Image" class="card-img-top" alt="Blog Post">
+                    <div class="card-body">
+                        <span class="badge bg-success mb-2">Guías</span>
+                        <h5 class="card-title">Guía para principiantes: Cómo elegir tu primera consola</h5>
+                        <p class="text-muted">10 de junio, 2024 | Por: Carlos M.</p>
+                        <p class="card-text">Todo lo que necesitas saber antes de comprar tu primera consola de videojuegos. Comparamos PS5, Xbox Series X y Nintendo Switch.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="#" class="btn btn-outline-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="https://placehold.co/800x400?text=Blog+Image" class="card-img-top" alt="Blog Post">
+                    <div class="card-body">
+                        <span class="badge bg-danger mb-2">Ofertas</span>
+                        <h5 class="card-title">Las mejores ofertas de la semana: Ahorra hasta un 90%</h5>
+                        <p class="text-muted">5 de junio, 2024 | Por: Laura S.</p>
+                        <p class="card-text">Descubre las mejores ofertas de juegos digitales disponibles esta semana. Títulos AAA a precios increíbles.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="#" class="btn btn-outline-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="https://placehold.co/800x400?text=Blog+Image" class="card-img-top" alt="Blog Post">
+                    <div class="card-body">
+                        <span class="badge bg-info text-dark mb-2">Reviews</span>
+                        <h5 class="card-title">Review: Elden Ring - Una obra maestra del género</h5>
+                        <p class="text-muted">1 de junio, 2024 | Por: Miguel A.</p>
+                        <p class="card-text">Analizamos a fondo Elden Ring, la colaboración entre FromSoftware y George R.R. Martin que ha revolucionado los juegos de rol.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="#" class="btn btn-outline-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Más artículos aquí -->
+        </div>
+        
+        <!-- Paginación -->
+        <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </main>
+
+<!-- Incluir el footer -->
+<div data-include="includes/footer.html"></div>
+
+<!-- Cookie Consent -->
+<div class="position-fixed bottom-0 start-0 end-0 p-3 bg-dark" style="z-index: 1050; display: block;" id="cookieConsent">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <p class="mb-md-0">Utilizamos cookies para mejorar tu experiencia. Al continuar navegando, aceptas nuestra <a href="#" class="text-primary">política de cookies</a>.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                <button class="btn btn-primary me-2" id="acceptCookies">Aceptar</button>
+                <button class="btn btn-outline-light" id="rejectCookies">Rechazar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Back to Top Button -->
+<a href="#" class="btn btn-primary position-fixed bottom-0 end-0 m-4 rounded-circle" id="backToTop" style="width: 50px; height: 50px; display: none; align-items: center; justify-content: center; z-index: 1000;">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Includes JS -->
+<script src="assets/js/includes.js"></script>
+<!-- Custom JS -->
+<script src="assets/js/scripts.js"></script>
+</body>
+</html>

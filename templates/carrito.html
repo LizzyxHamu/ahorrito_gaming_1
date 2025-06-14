@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Ahorrito Gaming</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Incluir el menú -->
+    <div data-include="includes/menu.html"></div>
+
+    <!-- Hero Section -->
+    <section class="hero text-center" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1607853202273-797f1c22a38e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="container">
+            <h1 class="display-4 mb-4">Carrito de Compras</h1>
+            <p class="lead mb-5">Revisa tus productos y completa tu compra</p>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card bg-dark mb-4">
+                    <div class="card-header bg-dark">
+                        <h4 class="mb-0">Productos en tu carrito (3)</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <!-- Cart Item 1 -->
+                        <div class="d-flex p-3 border-bottom border-secondary">
+                            <div class="flex-shrink-0">
+                                <img src="https://placehold.co/120x70?text=Cyberpunk+2077" alt="Cyberpunk 2077" class="rounded">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="mb-1">Cyberpunk 2077</h5>
+                                        <span class="badge bg-success">PC</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="game-price mb-2">$13.790</div>
+                                        <div class="text-decoration-line-through text-muted small">$45.990</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-primary ms-2">
+                                            <i class="fas fa-heart"></i> Guardar
+                                        </button>
+                                    </div>
+                                    <div class="text-success small">
+                                        <i class="fas fa-check-circle me-1"></i>En stock
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cart Item 2 -->
+                        <div class="d-flex p-3 border-bottom border-secondary">
+                            <div class="flex-shrink-0">
+                                <img src="https://placehold.co/120x70?text=God+of+War+Ragnarök" alt="God of War Ragnarök" class="rounded">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="mb-1">God of War Ragnarök</h5>
+                                        <span class="badge bg-primary">PS5</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="game-price mb-2">$27.490</div>
+                                        <div class="text-decoration-line-through text-muted small">$54.990</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-primary ms-2">
+                                            <i class="fas fa-heart"></i> Guardar
+                                        </button>
+                                    </div>
+                                    <div class="text-success small">
+                                        <i class="fas fa-check-circle me-1"></i>En stock
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cart Item 3 -->
+                        <div class="d-flex p-3">
+                            <div class="flex-shrink-0">
+                                <img src="https://placehold.co/120x70?text=Discord+Nitro" alt="Discord Nitro" class="rounded">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="mb-1">Discord Nitro (12 meses)</h5>
+                                        <span class="badge bg-info">Multiplataforma</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="game-price">$39.990</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-primary ms-2">
+                                            <i class="fas fa-heart"></i> Guardar
+                                        </button>
+                                    </div>
+                                    <div class="text-success small">
+                                        <i class="fas fa-check-circle me-1"></i>En stock
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <a href="index.html" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Seguir comprando
+                    </a>
+                    <button class="btn btn-outline-danger">
+                        <i class="fas fa-trash-alt me-2"></i>Vaciar carrito
+                    </button>
+                </div>
+
+                <!-- Cupón de descuento -->
+                <div class="card bg-dark mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-3">¿Tienes un cupón de descuento?</h5>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="Ingresa tu código">
+                            <button class="btn btn-primary" type="button">Aplicar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Order Summary -->
+                <div class="card bg-dark mb-4">
+                    <div class="card-header bg-dark">
+                        <h4 class="mb-0">Resumen del pedido</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span>$81.270</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Descuento</span>
+                            <span class="text-success">-$59.700</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>IVA (19%)</span>
+                            <span>$15.441</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total</strong>
+                            <strong class="game-price">$96.711</strong>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg">
+                                <i class="fas fa-lock me-2"></i>Proceder al pago
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="card bg-dark mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-3">Métodos de pago aceptados</h5>
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="payment-method mb-2">
+                                <img src="https://placehold.co/60x40?text=WebPay" alt="WebPay" class="img-fluid">
+                            </div>
+                            <div class="payment-method mb-2">
+                                <img src="https://placehold.co/60x40?text=Khipu" alt="Khipu" class="img-fluid">
+                            </div>
+                            <div class="payment-method mb-2">
+                                <img src="https://placehold.co/60x40?text=MercadoPago" alt="MercadoPago" class="img-fluid">
+                            </div>
+                            <div class="payment-method mb-2">
+                                <img src="https://placehold.co/60x40?text=Mach" alt="Mach" class="img-fluid">
+                            </div>
+                            <div class="payment-method mb-2">
+                                <img src="https://placehold.co/60x40?text=PayPal" alt="PayPal" class="img-fluid">
+                            </div>
+                            <div class="payment-method mb-2">
+                                <img src="https://placehold.co/60x40?text=Crypto" alt="Criptomonedas" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secure Shopping -->
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-shield-alt text-primary me-2 fa-lg"></i>
+                            <span>Compra 100% segura</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-bolt text-primary me-2 fa-lg"></i>
+                            <span>Entrega instantánea</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-headset text-primary me-2 fa-lg"></i>
+                            <span>Soporte 24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty Cart State (hidden by default) -->
+        <div class="row mt-5 d-none">
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                <h3>Tu carrito está vacío</h3>
+                <p class="text-muted mb-4">Parece que aún no has añadido ningún producto a tu carrito</p>
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-gamepad me-2"></i>Explorar juegos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Incluir el footer -->
+    <div data-include="includes/footer.html"></div>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Includes JS -->
+    <script src="assets/js/includes.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/scripts.js"></script>
+</body>
+</html>
