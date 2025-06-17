@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,5 @@ LOGOUT_REDIRECT_URL = '/'
 # ADVERTENCIA: En un proyecto real, esto debería manejarse con variables de entorno (ej: .env), solo por eso lo puse aquí como prueba u.u
 FLOW_API_KEY = '302F7482-937B-461A-A842-23L136CDD6D7'
 FLOW_SECRET_KEY = 'e5e2625bf16af5d09132651ed1dd4b27a42ff84d'
+
+CART_SESSION_ID = 'cart'
