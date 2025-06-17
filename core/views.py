@@ -35,3 +35,18 @@ def registro(request):
 
     context = {'form': form}
     return render(request, 'core/registro.html', context)
+
+def search_results(request):
+    # Obtenemos el término de búsqueda desde la URL (?q=...)
+    query = request.GET.get('q', '')
+    productos = []
+
+    # Si hay un término de búsqueda, filtramos los productos
+    if query:
+        productos = Producto.objects.filter(nombre__icontains=query)
+
+    context = {
+        'productos': productos,
+        'query': query,
+    }
+    return render(request, 'core/search_results.html', context)
