@@ -1,12 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Pedido Realizado con Éxito{% endblock %}
+
 {% block content %}
-<div class="text-center py-5">
-    <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
-    <h1 class="display-4">¡Gracias por tu compra!</h1>
-    <p class="lead">Tu pedido ha sido procesado exitosamente.</p>
-    <hr class="my-4">
-    <p>Recibirás una confirmación por correo electrónico en breve.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'index' %}" role="button">Volver a la tienda</a>
+<div class="container text-center py-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            
+            <img src="{% static 'img/check-circle.svg' %}" alt="Éxito" style="width: 100px; height: 100px; margin-bottom: 2rem; color: #198754;">
+
+            <h1 class="display-4 fw-bold orbitron-font">
+                {% if user.is_authenticated and user.first_name %}
+                    ¡Gracias por tu compra, {{ user.first_name }}!
+                {% else %}
+                    ¡Gracias por tu compra!
+                {% endif %}
+            </h1>
+
+            <p class="lead mt-3">Tu pedido ha sido procesado exitosamente.</p>
+            
+            <hr class="my-4 bg-secondary">
+            
+            <p class="text-white-50">Recibirás una confirmación por correo electrónico en breve con los detalles de tu orden.</p>
+            
+            <a class="btn btn-primary btn-lg mt-4" href="{% url 'index' %}" role="button" style="padding: 1rem 2.5rem; font-size: 1.2rem;">
+                <i class="fas fa-store me-2"></i>Volver a la tienda
+            </a>
+
+        </div>
+    </div>
 </div>
+
+<style>
+    img[alt="Éxito"] {
+        filter: invert(48%) sepia(34%) saturate(1478%) hue-rotate(97deg) brightness(95%) contrast(92%);
+    }
+</style>
 {% endblock %}

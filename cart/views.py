@@ -60,9 +60,7 @@ def checkout(request):
                     producto.stock -= cantidad_comprada
                     producto.save()
             
-            # --- INTEGRACIÓN CON FLOW ---
             flow_url_create = 'https://sandbox.flow.cl/api/payment/create'
-            # Es crucial que estas URLs sean absolutas para que Flow pueda acceder a ellas
             url_confirmation = request.build_absolute_uri(reverse('cart:payment_confirmation'))
             url_return = request.build_absolute_uri(reverse('cart:order_success'))
             
@@ -76,7 +74,6 @@ def checkout(request):
                 'urlConfirmation': url_confirmation,
                 'urlReturn': url_return,
             }
-            # Ordenar los parámetros para generar la firma correcta
             keys = sorted(params.keys())
             to_sign = "".join(f"{k}{params[k]}" for k in keys)
             signature = hmac.new(settings.FLOW_SECRET_KEY.encode('utf-8'), to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
@@ -87,35 +84,26 @@ def checkout(request):
             if response.status_code == 200:
                 response_data = response.json()
                 redirect_url = f"{response_data['url']}?token={response_data['token']}"
-                # Vaciar el carrito SÓLO después de que la redirección a Flow sea exitosa
                 cart.clear() 
                 return redirect(redirect_url)
             else:
-                # Si la creación del pago en Flow falla, revertimos el estado del pedido
                 pedido.estado = 'FALLIDO'
                 pedido.save()
                 messages.error(request, f"Error al conectar con Flow: {response.text}")
                 return redirect('cart:checkout')
         except Exception as e:
             messages.error(request, f'Ocurrió un error al procesar tu pedido: {e}')
-            # No se revierte la transacción aquí porque `transaction.atomic` ya lo hace en caso de excepción
             return redirect('cart:checkout')
     
     return render(request, 'cart/checkout.html', {'cart': cart})
 
 @csrf_exempt
 def payment_confirmation(request):
-    """
-    Vista Webhook: El servidor de Flow envía un POST aquí para confirmar el pago.
-    No es para el usuario. Su única misión es actualizar la base de datos.
-    """
     if request.method == 'POST':
         token = request.POST.get('token')
         if not token:
             return HttpResponse(status=400)
-
         try:
-            # Lógica para verificar el estado del pago con el token
             flow_url_status = 'https://sandbox.flow.cl/api/payment/getStatus'
             params = {'apiKey': settings.FLOW_API_KEY, 'token': token}
             keys = sorted(params.keys())
@@ -126,7 +114,6 @@ def payment_confirmation(request):
             response = requests.get(flow_url_status, params=params)
             if response.status_code == 200:
                 payment_data = response.json()
-                # 2 = PAGADO (PAID), 4 = RECHAZADO (REJECTED)
                 if payment_data.get('status') == 2:
                     commerce_order_id = payment_data.get('commerceOrder')
                     with transaction.atomic():
@@ -134,31 +121,23 @@ def payment_confirmation(request):
                         if pedido.estado == 'PENDIENTE':
                             pedido.estado = 'PAGADO'
                             pedido.save()
-                # Opcional: Manejar otros estados como RECHAZADO si es necesario
-            
         except Exception as e:
-            # Loggear el error sería una buena práctica aquí
-            pass # Si algo falla en el webhook, no rompemos el flujo.
-            
+            pass
     return HttpResponse(status=200)
 
-# --- CAMBIOS APLICADOS AQUÍ ---
-
-@csrf_exempt  # <-- 1. AÑADIDO: Exime a esta vista de la verificación CSRF.
+@csrf_exempt
 def order_success(request):
-    """
-    Vista de Retorno: El navegador del usuario es redirigido aquí después del pago.
-    Su única misión es mostrar un mensaje de éxito o de cancelación.
-    """
-    # 2. MODIFICADO: Busca el token en POST o GET para mayor robustez.
     token = request.POST.get('token') or request.GET.get('token')
     
+    context = {
+        'user': request.user
+    }
+    
     if token:
-        # Si hay token, el pago fue iniciado. Mostramos un mensaje de éxito general.
-        # La confirmación real y el cambio de estado lo hizo la vista 'payment_confirmation'.
-        messages.success(request, '¡Gracias por tu compra! Tu pedido está siendo procesado. Recibirás una confirmación en breve.')
-        return render(request, 'cart/order_success.html')
+        messages.success(request, '¡Gracias por tu compra! Tu pedido está siendo procesado.')
+        # --- LÍNEA MODIFICADA ---
+        # Ahora pasamos el 'context' que contiene la información del usuario
+        return render(request, 'cart/order_success.html', context)
     else:
-        # Si no hay token, el usuario probablemente canceló el pago en Flow.
         messages.warning(request, "Has cancelado el proceso de pago. Tu pedido no ha sido completado.")
         return redirect('cart:view_cart')
