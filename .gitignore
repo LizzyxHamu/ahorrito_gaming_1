@@ -1,0 +1,28 @@
+# Archivos de Bytecode de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entorno Virtual
+venv/
+env/
+.venv/
+.env/
+
+# Archivos de configuración de IDEs
+.idea/
+.vscode/
+
+# Archivos de Django
+*.log
+db.sqlite3
+/media/
+/static/  # Si se genera con collectstatic
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno (MUY IMPORTANTE)
+.env

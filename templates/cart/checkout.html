@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load humanize %} {% block title %}Confirmar Pedido - Ahorrito Gaming{% endblock %}
+{% load humanize %} 
+
+{% block title %}Confirmar Pedido - Ahorrito Gaming{% endblock %}
 
 {% block content %}
 <h1 class="mb-4">Confirmar y Pagar</h1>
@@ -15,12 +17,12 @@
                     <h6 class="my-0">{{ item.producto.nombre }}</h6>
                     <small class="text-muted">Cantidad: {{ item.cantidad }}</small>
                 </div>
-                <span class="text-muted">${{ item.subtotal|floatformat:"0g"|intcomma }}</span>
+                <span class="text-muted">${{ item.subtotal|intcomma }}</span>
             </li>
             {% endfor %}
             <li class="list-group-item d-flex justify-content-between bg-dark-card text-white">
                 <span>Total (CLP)</span>
-                <strong>${{ cart.get_total_price|floatformat:"0g"|intcomma }}</strong>
+                <strong>${{ cart.get_total_price|intcomma }}</strong>
             </li>
         </ul>
     </div>

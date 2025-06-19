@@ -1,25 +1,43 @@
-# core/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 class CustomUserCreationForm(UserCreationForm):
-    # Añadimos los nuevos campos que queremos en el formulario
-    email = forms.EmailField(required=True, help_text='Requerido. Ingrese un correo válido.')
-    first_name = forms.CharField(max_length=30, required=True, help_text='Requerido.')
-    last_name = forms.CharField(max_length=30, required=True, help_text='Requerido.')
+    email = forms.EmailField(
+        required=True, 
+        help_text='Requerido. Ingrese un correo válido.',
+        widget=forms.EmailInput(attrs={'class': 'form-control bg-dark text-light border-secondary'})
+    )
+    first_name = forms.CharField(
+        max_length=30, 
+        required=True, 
+        help_text='Requerido.',
+        widget=forms.TextInput(attrs={'class': 'form-control bg-dark text-light border-secondary'})
+    )
+    last_name = forms.CharField(
+        max_length=30, 
+        required=True, 
+        help_text='Requerido.',
+        widget=forms.TextInput(attrs={'class': 'form-control bg-dark text-light border-secondary'})
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User
-        # Especificamos los campos que se mostrarán en el formulario, en orden
         fields = ('username', 'first_name', 'last_name', 'email')
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control bg-dark text-light border-secondary'}),
+        }
 
-    def save(self, commit=True):
-        # Sobrescribimos el método save para guardar los nuevos campos
-        user = super(CustomUserCreationForm, self).save(commit=False)
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
+class ContactoForm(forms.Form):
+    ASUNTO_CHOICES = [
+        ('soporte', 'Soporte técnico'),
+        ('ventas', 'Consulta de ventas'),
+        ('reembolso', 'Reembolso'),
+        ('afiliados', 'Programa de afiliados'),
+        ('otro', 'Otro'),
+    ]
+    
+    nombre = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control bg-dark text-light border-secondary', 'placeholder': 'Tu nombre completo'}))
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control bg-dark text-light border-secondary', 'placeholder': 'tu@email.com'}))
+    asunto = forms.ChoiceField(choices=ASUNTO_CHOICES, required=True, widget=forms.Select(attrs={'class': 'form-select bg-dark text-light border-secondary'}))
+    mensaje = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control bg-dark text-light border-secondary', 'rows': 5, 'placeholder': 'Escribe tu mensaje aquí...'}), required=True)

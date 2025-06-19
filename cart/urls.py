@@ -1,4 +1,3 @@
-# cart/urls.py
 from django.urls import path
 from . import views
 
@@ -10,8 +9,6 @@ urlpatterns = [
     path('remove/<int:producto_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('decrement/<int:producto_id>/', views.decrement_cart_item, name='decrement_cart_item'),
     path('checkout/', views.checkout, name='checkout'),
-    # Ruta para que el SERVIDOR de Flow confirme el pago (POST)
-    path('payment-confirmation/', views.payment_confirmation, name='payment_confirmation'),
-    # Ruta a la que vuelve el NAVEGADOR del usuario (GET)
-    path('order-success/', views.order_success, name='order_success'),
+    path('payment/confirmation/', views.payment_confirmation, name='payment_confirmation'),
+    path('order/success/', views.order_success, name='order_success'),
 ]

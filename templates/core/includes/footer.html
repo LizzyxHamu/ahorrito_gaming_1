@@ -1,99 +1,41 @@
-<!-- Footer -->
+{% load static %}
 <footer class="text-light">
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-lg-3 col-md-6">
                 <h5 class="mb-4">Ahorrito Gaming</h5>
-                <p>Tu tienda de confianza para comprar juegos digitales al mejor precio en Chile. Entrega instantánea y soporte 24/7.</p>
-                <div class="mt-4">
-                    <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-light me-3"><i class="fab fa-discord"></i></a>
-                    <a href="#" class="text-light"><i class="fab fa-youtube"></i></a>
-                </div>
+                <p>Tu tienda de confianza para comprar juegos digitales al mejor precio en Chile.</p>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h5 class="mb-4">Enlaces rápidos</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="index.html" class="text-light text-decoration-none">Inicio</a></li>
-                    <li class="mb-2"><a href="ofertas.html" class="text-light text-decoration-none">Ofertas</a></li>
-                    <li class="mb-2"><a href="precompras.html" class="text-light text-decoration-none">Pre-compras</a></li>
-                    <li class="mb-2"><a href="giftcards.html" class="text-light text-decoration-none">Gift Cards</a></li>
-                    <li class="mb-2"><a href="blog.html" class="text-light text-decoration-none">Blog</a></li>
-                    <li class="mb-2"><a href="contacto.html" class="text-light text-decoration-none">Contacto</a></li>
+                    <li class="mb-2"><a href="{% url 'core:index' %}" class="text-light text-decoration-none">Inicio</a></li>
+                    <li class="mb-2"><a href="{% url 'core:precompras' %}" class="text-light text-decoration-none">Pre-compras</a></li>
+                    <li class="mb-2"><a href="{% url 'core:contacto' %}" class="text-light text-decoration-none">Contacto</a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h5 class="mb-4">Categorías</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="pc.html" class="text-light text-decoration-none">PC</a></li>
-                    <li class="mb-2"><a href="playstation.html" class="text-light text-decoration-none">PlayStation</a></li>
-                    <li class="mb-2"><a href="xbox.html" class="text-light text-decoration-none">Xbox</a></li>
-                    <li class="mb-2"><a href="nintendo.html" class="text-light text-decoration-none">Nintendo</a></li>
-                    <li class="mb-2"><a href="dlcs.html" class="text-light text-decoration-none">DLCs</a></li>
-                    <li class="mb-2"><a href="software.html" class="text-light text-decoration-none">Software</a></li>
+                    <li class="mb-2"><a href="{% url 'core:categoria' categoria_slug='juegos-de-pc' %}" class="text-light text-decoration-none">PC</a></li>
+                    <li class="mb-2"><a href="{% url 'core:categoria' categoria_slug='juegos-playstation-5' %}" class="text-light text-decoration-none">PlayStation</a></li>
+                    <li class="mb-2"><a href="{% url 'core:categoria' categoria_slug='juegos-nintendo-switch' %}" class="text-light text-decoration-none">Nintendo</a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h5 class="mb-4">Información</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="sobre-nosotros.html" class="text-light text-decoration-none">Sobre nosotros</a></li>
-                    <li class="mb-2"><a href="faq.html" class="text-light text-decoration-none">Preguntas frecuentes</a></li>
-                    <li class="mb-2"><a href="terminos.html" class="text-light text-decoration-none">Términos y condiciones</a></li>
-                    <li class="mb-2"><a href="privacidad.html" class="text-light text-decoration-none">Política de privacidad</a></li>
-                    <li class="mb-2"><a href="devoluciones.html" class="text-light text-decoration-none">Política de devoluciones</a></li>
-                    <li class="mb-2"><a href="afiliados.html" class="text-light text-decoration-none">Programa de afiliados</a></li>
+                    <li class="mb-2"><a href="{% url 'core:sobre_nosotros' %}" class="text-light text-decoration-none">Sobre nosotros</a></li>
+                    <li class="mb-2"><a href="{% url 'core:terminos' %}" class="text-light text-decoration-none">Términos y condiciones</a></li>
+                    <li class="mb-2"><a href="{% url 'core:privacidad' %}" class="text-light text-decoration-none">Política de privacidad</a></li>
                 </ul>
             </div>
         </div>
         <hr class="my-4">
         <div class="row">
             <div class="col-md-6">
-                <p class="mb-md-0">© 2025 Ahorrito Gaming. Todos los derechos reservados.</p>
-                <p class="text-light mt-2">Este sitio es un proyecto para portafolio de título desarrollado por: <br>
-                    <span class="text-light">Marco Hernández</span>, 
-                    <span class="text-light">Elizabeth Alegría</span> y 
-                    <span class="text-light">Daniel San Martín</span>
-                </p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <div class="d-inline-block me-3">
-                    <img src="https://placehold.co/40x25?text=WebPay" alt="WebPay">
-                </div>
-                <div class="d-inline-block me-3">
-                    <img src="https://placehold.co/40x25?text=MercadoPago" alt="MercadoPago">
-                </div>
-                <div class="d-inline-block me-3">
-                    <img src="https://placehold.co/40x25?text=PayPal" alt="PayPal">
-                </div>
-                <div class="d-inline-block me-3">
-                    <img src="https://placehold.co/40x25?text=Mach" alt="Mach">
-                </div>
-                <div class="d-inline-block">
-                    <img src="https://placehold.co/40x25?text=Crypto" alt="Criptomonedas">
-                </div>
+                <p class="mb-md-0">&copy; {% now "Y" %} Ahorrito Gaming. Todos los derechos reservados.</p>
             </div>
         </div>
     </div>
 </footer>
-
-<!-- Cookie Consent -->
-<div class="position-fixed bottom-0 start-0 end-0 p-3 bg-dark" style="z-index: 1050; display: block;" id="cookieConsent">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <p class="mb-md-0">Utilizamos cookies para mejorar tu experiencia. Al continuar navegando, aceptas nuestra <a href="#" class="text-primary">política de cookies</a>.</p>
-            </div>
-            <div class="col-md-4 text-md-end mt-2 mt-md-0">
-                <button class="btn btn-primary me-2" id="acceptCookies">Aceptar</button>
-                <button class="btn btn-outline-light" id="rejectCookies">Rechazar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Back to Top Button -->
-<a href="#" class="btn btn-primary position-fixed bottom-0 end-0 m-4 rounded-circle" id="backToTop" style="width: 50px; height: 50px; display: none; align-items: center; justify-content: center; z-index: 1000;">
-    <i class="fas fa-arrow-up"></i>
-</a>

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}{{ producto.nombre }} - Ahorrito Gaming{% endblock %}
 
@@ -9,24 +10,28 @@
         {% if producto.imagen %}
             <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow-lg" alt="{{ producto.nombre }}">
         {% else %}
-            <img src="https://placehold.co/600x400/1e1e1e/7b4cff?text=Sin+Imagen" class="img-fluid rounded shadow-lg" alt="Imagen no disponible">
+            <img src="{% static 'img/no_image.png' %}" class="img-fluid rounded shadow-lg" alt="Imagen no disponible">
         {% endif %}
     </div>
     <div class="col-md-6">
         <h1>{{ producto.nombre }}</h1>
-        <h4 class="mb-3"><span class="badge bg-info text-dark">{{ producto.categoria.nombre }}</span></h4>
+        <h4 class="mb-3">
+            <a href="{% url 'core:categoria' categoria_slug=producto.categoria.slug %}" class="text-decoration-none">
+                <span class="badge bg-info text-dark">{{ producto.categoria.nombre }}</span>
+            </a>
+        </h4>
         <hr class="border-secondary">
-        <p>{{ producto.descripcion }}</p>
+        <p>{{ producto.descripcion|linebreaks }}</p>
         <p><strong>Stock disponible:</strong> {{ producto.stock }} unidades</p>
-        <h2 class="text-primary my-4">${{ producto.precio }}</h2>
+        <h2 class="text-primary my-4">${{ producto.precio|intcomma }}</h2>
         <div class="d-grid gap-2 mt-4">
-    <a href="{% url 'cart:add_to_cart' producto.id %}" class="btn btn-primary btn-lg">
-        <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
-    </a>
-    <a href="{% url 'index' %}" class="btn btn-outline-light">
-        <i class="fas fa-arrow-left me-2"></i>Volver a la tienda
-    </a>
-</div>
+            <a href="{% url 'cart:add_to_cart' producto.id %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
+            </a>
+            <a href="{% url 'core:index' %}" class="btn btn-outline-light">
+                <i class="fas fa-arrow-left me-2"></i>Volver a la tienda
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load humanize %} {% block title %}Tu Carrito de Compras - Ahorrito Gaming{% endblock %}
+{% load humanize %} 
+
+{% block title %}Tu Carrito de Compras - Ahorrito Gaming{% endblock %}
 
 {% block content %}
 <h1 class="mb-4">Tu Carrito de Compras</h1>
@@ -22,16 +24,16 @@
                 {% for item in cart %}
                 <tr>
                     <td>
+                        <a href="{% url 'core:detalle_producto' item.producto.id %}">
                         {% if item.producto.imagen %}
                             <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.nombre }}" class="img-fluid rounded" style="max-width: 100px;">
                         {% else %}
                             <img src="{% static 'img/no_image.png' %}" class="img-fluid rounded" style="max-width: 100px;" alt="Imagen no disponible">
                         {% endif %}
+                        </a>
                     </td>
-                    <td><a href="{% url 'detalle_producto' item.producto.id %}">{{ item.producto.nombre }}</a></td>
-                    
-                    <td>${{ item.producto.precio|floatformat:"0g"|intcomma }}</td>
-                    
+                    <td><a href="{% url 'core:detalle_producto' item.producto.id %}">{{ item.producto.nombre }}</a></td>
+                    <td>${{ item.precio|intcomma }}</td>
                     <td class="text-center">
                         <div class="input-group justify-content-center" style="width: 120px; margin: auto;">
                             <a href="{% url 'cart:decrement_cart_item' item.producto.id %}" class="btn btn-outline-secondary btn-sm">-</a>
@@ -39,9 +41,7 @@
                             <a href="{% url 'cart:add_to_cart' item.producto.id %}" class="btn btn-outline-secondary btn-sm">+</a>
                         </div>
                     </td>
-                    
-                    <td>${{ item.subtotal|floatformat:"0g"|intcomma }}</td>
-                    
+                    <td>${{ item.subtotal|intcomma }}</td>
                     <td class="text-center">
                         <a href="{% url 'cart:remove_from_cart' item.producto.id %}" class="btn btn-danger btn-sm" title="Eliminar producto">
                             <i class="fas fa-trash"></i>
@@ -60,7 +60,7 @@
                     <h4 class="card-title mb-3">Resumen del Pedido</h4>
                     <div class="d-flex justify-content-between">
                         <h5>Total:</h5>
-                        <h5 class="text-primary">${{ cart.get_total_price|floatformat:"0g"|intcomma }}</h5>
+                        <h5 class="text-primary">${{ cart.get_total_price|intcomma }}</h5>
                     </div>
                     <div class="d-grid mt-3">
                         <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-lg">Proceder al Pago</a>
@@ -72,7 +72,7 @@
 {% else %}
     <div class="alert alert-info text-center" role="alert">
         <p class="h4 mb-3">Tu carrito está vacío.</p>
-        <a href="{% url 'index' %}" class="btn btn-primary">¡Empieza a comprar!</a>
+        <a href="{% url 'core:index' %}" class="btn btn-primary">¡Empieza a comprar!</a>
     </div>
 {% endif %}
 {% endblock %}
