@@ -32,10 +32,10 @@
                         {% endif %}
                         </a>
                     </td>
-                    <td><a href="{% url 'core:detalle_producto' item.producto.id %}">{{ item.producto.nombre }}</a></td>
+                    <td><a href="{% url 'core:detalle_producto' item.producto.id %}" class="text-light">{{ item.producto.nombre }}</a></td>
                     <td>${{ item.precio|intcomma }}</td>
                     <td class="text-center">
-                        <div class="input-group justify-content-center" style="width: 120px; margin: auto;">
+                        <div class="input-group justify-content-center" style="width: 130px; flex-wrap: nowrap;">
                             <a href="{% url 'cart:decrement_cart_item' item.producto.id %}" class="btn btn-outline-secondary btn-sm">-</a>
                             <input type="text" class="form-control form-control-sm text-center" value="{{ item.cantidad }}" readonly>
                             <a href="{% url 'cart:add_to_cart' item.producto.id %}" class="btn btn-outline-secondary btn-sm">+</a>

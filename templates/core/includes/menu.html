@@ -12,18 +12,22 @@
             
             <form class="d-flex mx-auto" style="width: 50%;" action="{% url 'core:search_results' %}" method="get">
                 <div class="input-group">
-                    <input class="form-control search-bar" type="search" name="q" placeholder="Buscar juegos...">
+                    <input class="form-control search-bar" id="search-input" type="search" name="q" placeholder="Buscar juegos..." autocomplete="off">
                     <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                 </div>
+                <div id="suggestions-box" class="list-group position-absolute w-100" style="top: 100%; z-index: 1000;"></div>
             </form>
 
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart:view_cart' %}">
-                        <i class="fas fa-shopping-cart"></i> Carrito
-                        {% if cart|length > 0 %}
-                            <span class="badge rounded-pill bg-primary ms-1">{{ cart|length }}</span>
-                        {% endif %}
+                    <a class="nav-link d-flex align-items-center" href="{% url 'cart:view_cart' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="ms-1">Carrito</span>
+                        {% with total_items=cart|length %}
+                            {% if total_items > 0 %}
+                                <span class="badge rounded-pill bg-primary ms-2">{{ total_items }}</span>
+                            {% endif %}
+                        {% endwith %}
                     </a>
                 </li>
                 {% if user.is_authenticated %}
@@ -32,15 +36,12 @@
                         <i class="fas fa-user-circle me-1"></i>Hola, {{ user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userMenuDropdown">
-                        <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                        <li><a class="dropdown-item" href="#">Mis Pedidos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'core:dashboard' %}">Mi Cuenta</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{% url 'core:logout' %}" method="post" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="dropdown-item">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                                </button>
+                                <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</button>
                             </form>
                         </li>
                     </ul>

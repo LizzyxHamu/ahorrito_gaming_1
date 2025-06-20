@@ -18,11 +18,6 @@ class Pedido(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='PENDIENTE')
 
-    class Meta:
-        verbose_name = 'Pedido'
-        verbose_name_plural = 'Pedidos'
-        ordering = ['-fecha_pedido']
-
     def __str__(self):
         return f'Pedido #{self.id} - {self.usuario.username if self.usuario else "Usuario Eliminado"}'
 
@@ -31,10 +26,6 @@ class DetallePedido(models.Model):
     producto = models.ForeignKey(Producto, related_name='detalles_pedido', on_delete=models.PROTECT)
     cantidad = models.IntegerField()
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
-
-    class Meta:
-        verbose_name = 'Detalle de Pedido'
-        verbose_name_plural = 'Detalles de Pedidos'
 
     def __str__(self):
         return f'{self.cantidad} x {self.producto.nombre} en Pedido #{self.pedido.id}'

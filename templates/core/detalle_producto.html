@@ -28,7 +28,15 @@
             <a href="{% url 'cart:add_to_cart' producto.id %}" class="btn btn-primary btn-lg">
                 <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
             </a>
-            <a href="{% url 'core:index' %}" class="btn btn-outline-light">
+            <a href="{% url 'core:add_to_wishlist' producto.id %}" class="btn btn-outline-danger">
+                <i class="fas fa-heart me-2"></i>
+                {% if user in producto.wishlist.all %}
+                    Eliminar de Lista de Deseos
+                {% else %}
+                    Añadir a Lista de Deseos
+                {% endif %}
+            </a>
+            <a href="{% url 'core:index' %}" class="btn btn-outline-light mt-2">
                 <i class="fas fa-arrow-left me-2"></i>Volver a la tienda
             </a>
         </div>
