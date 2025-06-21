@@ -1,46 +1,47 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark-ui sticky-top shadow-sm">
+    <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'core:index' %}">
-            <i class="fas fa-gamepad me-2 text-primary"></i>
-            <span style="font-family: 'Orbitron', sans-serif; font-weight: 700;">Ahorrito Gaming</span>
+            <img src="{% static 'img/logo.png' %}" alt="Ahorrito Gaming Logo" class="navbar-logo">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <form class="d-flex mx-auto position-relative" style="width: 50%;" action="{% url 'core:search_results' %}" method="get">
-                <div class="input-group">
-                    <input class="form-control" id="search-input" type="search" name="q" placeholder="Buscar juegos..." autocomplete="off">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-                </div>
-                <div id="suggestions-box" class="list-group position-absolute w-100" style="top: 100%; z-index: 1000;"></div>
-            </form>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            
+            <div class="navbar-search-form mx-auto">
+                <form class="d-flex position-relative" action="{% url 'core:search_results' %}" method="get">
+                    <input class="form-control" id="search-input" type="search" name="q" placeholder="Buscar en Ahorrito Gaming..." autocomplete="off">
+                    <button class="btn btn-primary" type="submit" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                    <div id="suggestions-box" class="list-group position-absolute w-100" style="top: 100%; z-index: 1000;"></div>
+                </form>
+            </div>
+            
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'cart:view_cart' %}">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="ms-1">Carrito</span>
+                    <a class="nav-link" href="{% url 'cart:view_cart' %}">
+                        <i class="fas fa-shopping-cart fa-fw"></i>
+                        <span class="d-none d-lg-inline ms-1">Carrito</span>
                         {% with total_items=cart|length %}
-                            {% if total_items > 0 %}
-                                <span class="badge rounded-pill bg-primary ms-2">{{ total_items }}</span>
-                            {% endif %}
+                            {% if total_items > 0 %}<span class="badge rounded-pill bg-primary ms-1">{{ total_items }}</span>{% endif %}
                         {% endwith %}
                     </a>
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle me-1"></i>Hola, {{ user.username }}
+                        <i class="fas fa-user-circle fa-fw me-1"></i>Hola, {{ user.username }}
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" href="{% url 'core:dashboard' %}">Mi Cuenta</a></li>
-                        <li><a class="dropdown-item" href="{% url 'core:wishlist' %}">Mi Lista de Deseos</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'core:dashboard' %}"><i class="fas fa-tachometer-alt fa-fw me-2"></i>Mi Cuenta</a></li>
+                        <li><a class="dropdown-item" href="{% url 'core:wishlist' %}"><i class="fas fa-heart fa-fw me-2"></i>Mi Lista de Deseos</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{% url 'core:logout' %}" method="post" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</button>
+                                <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt fa-fw me-2"></i>Cerrar Sesión</button>
                             </form>
                         </li>
                     </ul>
@@ -50,7 +51,7 @@
                     <a class="nav-link" href="{% url 'core:login' %}">Iniciar Sesión</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-primary ms-2" href="{% url 'core:registro' %}">Registrarse</a>
+                    <a class="btn btn-primary btn-sm ms-2" href="{% url 'core:registro' %}">Registrarse</a>
                 </li>
                 {% endif %}
             </ul>

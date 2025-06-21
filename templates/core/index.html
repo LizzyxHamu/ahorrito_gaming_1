@@ -4,7 +4,7 @@
 {% block title %}Tu tienda de juegos digitales en Chile{% endblock %}
 
 {% block content %}
-<section class="hero text-center mb-5" style="background: #222; padding: 4rem 0;">
+<section class="hero text-center mb-5" style="padding: 4rem 0;">
     <div class="container">
         <h1 class="display-4 mb-4">Juegos Digitales al Mejor Precio</h1>
         <p class="lead mb-5">Miles de juegos para todas las plataformas con entrega instantánea.</p>
@@ -32,7 +32,7 @@
                 <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">‹</a></li>
             {% endif %}
-            <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+            <li class="page-item active" aria-current="page"><span class="page-link">{{ page_obj.number }}</span></li>
             {% if page_obj.has_next %}
                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">›</a></li>
                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>

@@ -1,18 +1,65 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Política de Privacidad - Ahorrito Gaming{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="mb-4">Política de Privacidad</h1>
-    <div class="bg-dark-card p-4 rounded mb-4">
-        <p class="text-muted">Última actualización: 20 de Junio, 2025</p>
-        <div class="mb-4">
-            <h4>1. Introducción</h4>
-            <p>En Ahorrito Gaming, valoramos y respetamos tu privacidad. Esta Política de Privacidad describe cómo recopilamos, utilizamos, almacenamos y protegemos tu información personal cuando utilizas nuestro sitio web y nuestros servicios.</p>
-        </div>
-        <div class="mb-4">
-            <h4>2. Información que recopilamos</h4>
-            <p>Podemos recopilar información personal (nombre, email), de pago (procesada por terceros) y de uso para mejorar tu experiencia.</p>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <h1 class="text-center mb-4 text-primary">Política de Privacidad</h1>
+            <p class="text-center text-muted">Última actualización: 20 de junio de 2025</p>
+
+            <p class="lead text-center mb-5">
+                En Ahorrito Gaming, tu privacidad y la seguridad de tu información son una prioridad absoluta. Esta política explica de manera clara y sencilla qué datos personales recopilamos, cómo los usamos y cuáles son tus derechos sobre ellos, todo en conformidad con la ley chilena.
+            </p>
+
+            <hr class="my-5">
+
+            <h4 class="mt-4">1. ¿Quién es el responsable de tus datos?</h4>
+            <p>Ahorrito Gaming (www.ahorritogaming.cl) es el responsable del tratamiento de los datos personales que nos proporcionas a través de nuestro sitio web.</p>
+
+            <h4 class="mt-4">2. ¿Qué datos personales recopilamos?</h4>
+            <p>Recopilamos la información estrictamente necesaria para ofrecerte nuestros servicios:</p>
+            <ul>
+                <li><strong>Información que nos entregas directamente:</strong> Tu nombre, dirección de correo electrónico y historial de compras al registrarte y realizar un pedido.</li>
+                <li><strong>Información que recopilamos automáticamente:</strong> Datos técnicos como tu dirección IP y tipo de navegador, así como el uso de cookies esenciales para el funcionamiento del sitio (por ejemplo, para mantener tu sesión iniciada o los productos en tu carrito).</li>
+            </ul>
+            <p><strong>Importante:</strong> Nosotros <strong>no almacenamos ni tenemos acceso</strong> a los datos de tus tarjetas de crédito o débito. Todo el proceso de pago es gestionado de forma segura por nuestra pasarela de pagos externa (Flow).</p>
+
+            <h4 class="mt-4">3. ¿Para qué usamos tus datos?</h4>
+            <p>Utilizamos tu información exclusivamente para los siguientes propósitos:</p>
+            <ul>
+                <li>Procesar tus compras y entregarte las claves digitales de tus productos.</li>
+                <li>Crear y administrar tu cuenta de usuario en nuestro sitio.</li>
+                <li>Brindarte soporte al cliente cuando lo necesites.</li>
+                <li>Comunicarnos contigo sobre asuntos importantes relacionados con tus pedidos o tu cuenta.</li>
+                <li>Enviarte ofertas o noticias (marketing), únicamente si nos has dado tu consentimiento explícito para ello. Siempre tendrás la opción de desuscribirte.</li>
+            </ul>
+
+            <h4 class="mt-4">4. ¿Con quién compartimos tu información?</h4>
+            <p>No vendemos ni cedemos tus datos personales a terceros con fines de marketing. Solo los compartimos con proveedores de servicios esenciales para nuestro funcionamiento, como la pasarela de pagos para procesar tu compra. También podríamos compartirla si una autoridad judicial nos lo exige en el marco de una investigación legal.</p>
+            
+            <h4 class="mt-4">5. Tus Derechos (Derechos ARCO)</h4>
+            <p>De acuerdo con la <strong>Ley N° 19.628</strong>, tienes pleno control sobre tus datos personales. Estos son tus derechos:</p>
+            <ul>
+                <li><strong>Acceso:</strong> Puedes solicitar saber qué información tenemos sobre ti.</li>
+                <li><strong>Rectificación:</strong> Puedes pedirnos que corrijamos tus datos si son inexactos o están incompletos.</li>
+                <li><strong>Cancelación (Eliminación):</strong> Puedes solicitar la eliminación de tus datos de nuestros registros, siempre que no exista una obligación legal de conservarlos (por ejemplo, por temas tributarios con el SII).</li>
+                <li><strong>Oposición:</strong> Puedes oponerte a que usemos tus datos para fines específicos, como el envío de publicidad.</li>
+            </ul>
+            <p>Para ejercer cualquiera de estos derechos, por favor contáctanos a nuestro correo de soporte: <a href="mailto:soporte@ahorritogaming.cl">soporte@ahorritogaming.cl</a>.</p>
+
+            <h4 class="mt-4">6. Seguridad de tus Datos</h4>
+            <p>Tomamos todas las medidas técnicas y organizativas a nuestro alcance para proteger tu información contra el acceso no autorizado, la alteración o la destrucción.</p>
+
+            <div class="text-center mt-5 pt-4 border-top">
+                <a href="{% url 'core:index' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo Ahorrito Gaming" class="about-us-logo">
+                </a>
+            </div>
+            
         </div>
     </div>
 </div>

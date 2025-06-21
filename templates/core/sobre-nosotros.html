@@ -1,17 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Sobre Nosotros - Ahorrito Gaming{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="mb-4">Sobre Nosotros</h1>
-    <div class="row mb-5 align-items-center">
-        <div class="col-lg-6 mb-4 mb-lg-0">
-            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" class="img-fluid rounded" alt="Equipo Ahorrito Gaming">
-        </div>
-        <div class="col-lg-6">
-            <h2 class="mb-3">Nuestra Historia</h2>
-            <p>Ahorrito Gaming nació con una misión clara: hacer que los juegos digitales sean más accesibles para los gamers chilenos. Fundada por un grupo de apasionados jugadores, nuestra tienda ha crecido hasta convertirse en uno de los distribuidores de juegos digitales más confiables de Chile.</p>
-            <p>Entendemos las dificultades que muchos enfrentan al intentar adquirir juegos a precios razonables. Por eso, trabajamos incansablemente para ofrecer los mejores precios del mercado, garantizando siempre una experiencia de compra segura y satisfactoria.</p>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <h1 class="text-center mb-4 text-primary">Sobre Ahorrito Gaming</h1>
+
+            <p class="lead text-center mb-5">
+                Nacimos de una pasión compartida por los videojuegos y el deseo de hacerlos más accesibles para todos en Chile. En Ahorrito Gaming, no solo vendemos juegos, vivimos la cultura gamer cada día.
+            </p>
+
+            <hr class="my-5">
+
+            <h3 class="mt-5">Nuestra Misión</h3>
+            <p>
+                Nuestra misión es simple: ofrecer la más amplia variedad de juegos digitales, gift cards y accesorios al mejor precio del mercado, con un servicio de entrega instantáneo y una atención al cliente que entiende tus necesidades como jugador. Creemos que todos merecen disfrutar de las últimas novedades y los grandes clásicos sin que el bolsillo sufra.
+            </p>
+
+            <h3 class="mt-5">Nuestra Visión</h3>
+            <p>
+                Aspiramos a ser la comunidad y tienda de referencia para los gamers en Chile y Latinoamérica. Queremos construir un espacio donde no solo encuentres los mejores precios, sino también un lugar donde puedas compartir tus experiencias, leer reseñas honestas y sentirte parte de algo más grande. La confianza y la satisfacción de nuestros clientes son el pilar de nuestro crecimiento.
+            </p>
+
+            <h3 class="mt-5">¿Por qué elegirnos?</h3>
+            <ul>
+                <li><strong>Precios Competitivos:</strong> Buscamos constantemente las mejores ofertas para ti.</li>
+                <li><strong>Entrega Instantánea:</strong> Recibe tus códigos de juegos al instante después de la compra.</li>
+                <li><strong>Catálogo Extenso:</strong> Desde los últimos lanzamientos AAA hasta joyas indie.</li>
+                <li><strong>Soporte Especializado:</strong> Nuestro equipo está formado por gamers que entienden tus dudas.</li>
+            </ul>
+
+            <div class="text-center mt-5 pt-4 border-top">
+                <a href="{% url 'core:index' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo Ahorrito Gaming" class="about-us-logo">
+                </a>
+            </div>
+            
         </div>
     </div>
 </div>

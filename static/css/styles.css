@@ -28,3 +28,47 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 .hero { background: linear-gradient(rgba(18,18,18, 0.7), rgba(18,18,18, 0.7)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; padding: 100px 0; border-radius: 12px; }
 .hero h1 { text-shadow: 0 0 15px var(--accent), 0 0 5px var(--primary); }
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; }
+
+/* --- ESTILOS PARA LA BARRA DE NAVEGACIÓN --- */
+.navbar-logo {
+    height: 40px; /* Controla el tamaño del logo */
+    width: auto;
+}
+
+.navbar-search-form {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* En vista móvil, el buscador ocupa todo el ancho y se separa un poco */
+@media (max-width: 991.98px) {
+    .navbar-search-form {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* --- ESTILO PARA EL LOGO EN LA PÁGINA "SOBRE NOSOTROS" --- */
+
+.about-us-logo {
+    max-height: 80px;  /* Define la altura máxima del logo para que sea 'pequeño' */
+    width: auto;       /* El ancho se ajustará automáticamente */
+    opacity: 0.8;      /* Una ligera transparencia para un look más 'armonioso' y sutil */
+    transition: opacity 0.3s ease-in-out; /* Transición suave para el efecto hover */
+}
+
+.about-us-logo:hover {
+    opacity: 1; /* Al pasar el cursor, el logo se vuelve completamente opaco */
+}
+
+/* Este estilo se reutiliza para el logo en páginas de contenido */
+.about-us-logo {
+    max-height: 80px;
+    width: auto;
+    opacity: 0.8;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.about-us-logo:hover {
+    opacity: 1;
+}
