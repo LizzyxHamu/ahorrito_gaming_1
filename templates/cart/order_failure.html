@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Error en el Pedido{% endblock %}
+{% block title %}Fallo en el Pago{% endblock %}
 
 {% block content %}
-<div class="text-center py-5">
-    <i class="fas fa-times-circle fa-5x text-danger mb-4"></i>
-    <h1 class="display-4">Hubo un Problema</h1>
-    <p class="lead">No pudimos procesar tu pago. Por favor, intenta de nuevo o contacta a soporte.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'cart:view_cart' %}" role="button">Volver al Carrito</a>
+<div class="container text-center my-5">
+    <i class="fas fa-times-circle fa-4x text-danger mb-4"></i>
+    <h1>Hubo un Problema con tu Pago</h1>
+    <p class="lead">Tu orden no pudo ser procesada. No se ha realizado ningún cargo.</p>
+    <a href="{% url 'cart:view_cart' %}" class="btn btn-primary mt-3">Volver al Carrito e Intentar de Nuevo</a>
 </div>
 {% endblock %}

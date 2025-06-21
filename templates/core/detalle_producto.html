@@ -6,17 +6,17 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-6 mb-4">
-        {% if producto.imagen %}
+    <div class="col-md-7 mb-4">
+        {% if producto.imagen and producto.imagen.url %}
             <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow-lg" alt="{{ producto.nombre }}">
         {% else %}
             <img src="{% static 'img/no_image.png' %}" class="img-fluid rounded shadow-lg" alt="Imagen no disponible">
         {% endif %}
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
         <h1>{{ producto.nombre }}</h1>
         <h4 class="mb-3">
-            <a href="{% url 'core:categoria' categoria_slug=producto.categoria.slug %}" class="text-decoration-none">
+            <a href="{{ producto.categoria.get_absolute_url }}" class="text-decoration-none">
                 <span class="badge bg-info text-dark">{{ producto.categoria.nombre }}</span>
             </a>
         </h4>
@@ -24,18 +24,28 @@
         <p>{{ producto.descripcion|linebreaks }}</p>
         <p><strong>Stock disponible:</strong> {{ producto.stock }} unidades</p>
         <h2 class="text-primary my-4">${{ producto.precio|intcomma }}</h2>
-        <div class="d-grid gap-2 mt-4">
-            <a href="{% url 'cart:add_to_cart' producto.id %}" class="btn btn-primary btn-lg">
-                <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
-            </a>
-            <a href="{% url 'core:add_to_wishlist' producto.id %}" class="btn btn-outline-danger">
-                <i class="fas fa-heart me-2"></i>
-                {% if user in producto.wishlist.all %}
-                    Eliminar de Lista de Deseos
-                {% else %}
-                    Añadir a Lista de Deseos
-                {% endif %}
-            </a>
+        
+        <div class="d-grid gap-2">
+            <form action="{% url 'cart:add_to_cart' producto.id %}?next={{ request.path|urlencode }}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
+                </button>
+            </form>
+            
+            <form action="{% url 'core:add_to_wishlist' producto.id %}?next={{ request.path|urlencode }}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger w-100">
+                    {% if user.is_authenticated and producto in user.wishlist_items.all %}
+                        <i class="fas fa-heart me-2"></i>Eliminar de Lista de Deseos
+                    {% else %}
+                        <i class="far fa-heart me-2"></i>Añadir a Lista de Deseos
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+        
+        <div class="d-grid mt-3">
             <a href="{% url 'core:index' %}" class="btn btn-outline-light mt-2">
                 <i class="fas fa-arrow-left me-2"></i>Volver a la tienda
             </a>
