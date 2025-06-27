@@ -72,3 +72,41 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .about-us-logo:hover {
     opacity: 1;
 }
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* ¡Crucial! Hace que todas las tarjetas en una fila tengan la misma altura. */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+.product-card-img-container {
+    aspect-ratio: 4 / 3; /* Obliga a todas las imágenes a tener la misma proporción 4:3 */
+    overflow: hidden;
+    background-color: var(--dark-ui);
+}
+.product-card .card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Rellena el espacio sin deformar la imagen */
+    transition: transform var(--transition-speed) ease;
+}
+.product-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+.product-card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Permite que esta sección se estire para llenar el espacio vacío */
+}
+.product-card .card-title {
+    /* Le damos una altura mínima para que los títulos largos no desalineen las tarjetas */
+    min-height: 3rem; /* Espacio aproximado para 2 líneas de texto */
+    margin-bottom: 0.5rem;
+}
+.product-card .mt-auto {
+    margin-top: auto !important; /* Forza al bloque de precio/botones a irse al fondo */
+}
