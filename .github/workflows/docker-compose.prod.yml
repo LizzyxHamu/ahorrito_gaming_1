@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Servicio de la Base de Datos (sin cambios)
+  db:
+    image: mysql:8.0
+    volumes:
+      - ahorrito_prod_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER} # Buena práctica añadir usuario específico
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
+  
+  # Servicio de la Aplicación Django (ahora con Gunicorn)
+  web:
+    build: .
+    entrypoint: /app/entrypoint.sh # Usa el script para esperar a la BD y migrar
+    volumes:
+      - static_volume:/app/staticfiles_prod
+      - media_volume:/app/media
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # NUEVO SERVICIO: Nginx como Reverse Proxy
+  nginx:
+    image: nginx:1.19.0-alpine
+    ports:
+      - "80:80" # Expone el puerto 80 al mundo exterior
+    volumes:
+      # Monta nuestra configuración de Nginx y los volúmenes de estáticos/media
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles_prod
+      - media_volume:/app/media
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  ahorrito_prod_data:
+  static_volume:
+  media_volume:

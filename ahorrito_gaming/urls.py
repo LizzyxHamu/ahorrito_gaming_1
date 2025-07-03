@@ -8,8 +8,7 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('', include('core.urls', namespace='core')),
 ]
-# --- CONFIGURACIÓN PARA DESARROLLO ---
-# Esta sección es una mejor práctica estándar en Django.
-# SOLO se activa cuando DEBUG=True en settings.py.
+
+# Esta sección es la que permite que las imágenes funcionen cuando DEBUG=True
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
