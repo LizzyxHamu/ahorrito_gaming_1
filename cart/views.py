@@ -156,3 +156,15 @@ def order_success(request):
     else:
         messages.info(request, "Si has completado un pago, serás notificado cuando se confirme.")
     return render(request, 'cart/order_success.html')
+@login_required
+def detalle_pedido_usuario(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
+    
+    
+    detalles = pedido.detalles.all().select_related('producto')
+    
+    context = {
+        'pedido': pedido,
+        'detalles': detalles
+    }
+    return render(request, 'cart/detalle_pedido.html', context)

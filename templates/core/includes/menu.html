@@ -33,9 +33,8 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
                         {% if user.is_staff %}
-                            <li><a class="dropdown-item" href="/admin" target="_blank"><i class="fas fa-cogs me-2"></i>Panel de Admin (Avanzado)</a></li>
-                            <li><a class="dropdown-item" href="#">Gestión de Productos</a></li>
-                            <li><a class="dropdown-item" href="#">Ver Pedidos</a></li>
+                          <li><a class="dropdown-item" href="{% url 'dashboard:admin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i>Panel de Gestión</a></li>
+                          <li><a class="dropdown-item" href="/admin" target="_blank"><i class="fas fa-cogs me-2"></i>Admin Avanzado (Django)</a></li>
                         {% else %}
                             <li><a class="dropdown-item" href="{% url 'core:dashboard' %}">Mi Cuenta (Mis Pedidos)</a></li>
                             <li><a class="dropdown-item" href="{% url 'core:wishlist' %}">Mi Lista de Deseos</a></li>

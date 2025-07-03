@@ -1,0 +1,50 @@
+{% extends "dashboard/base_admin.html" %}
+
+{% block admin_title %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<h1 class="mb-4">Dashboard</h1>
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-dark-card h-100">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Ventas (Mes)</div>
+                        <div class="h5 mb-0 font-weight-bold">$1,250,000</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="card bg-dark-card">
+            <div class="card-header">Ventas Mensuales</div>
+            <div class="card-body">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+        <div class="card bg-dark-card">
+            <div class="card-header">Ventas por Plataforma</div>
+            <div class="card-body">
+                <canvas id="platformChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_scripts %}
+<script>
+    // Script para los gráficos del dashboard (tomado de tu HTML)
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... (Aquí va el código JavaScript para inicializar los gráficos Chart.js)
+    });
+</script>
+{% endblock %}

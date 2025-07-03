@@ -7,6 +7,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
     path('', include('core.urls', namespace='core')),
+    path('gestion/', include('dashboard.urls', namespace='dashboard')),
+    path('', include('core.urls', namespace='core')),
 ]
 
 # Esta sección es la que permite que las imágenes funcionen cuando DEBUG=True

@@ -25,4 +25,7 @@ urlpatterns = [
     path('pago/fallido/', views.order_failure, name='order_failure'),
     # URL final: /cart/pago/confirmacion/ (para el webhook de la pasarela de pago)
     path('pago/confirmacion/', views.payment_confirmation, name='payment_confirmation'),
+
+    #--- vistas cliente---
+    path('mis-pedidos/<int:pedido_id>/', views.detalle_pedido_usuario, name='detalle_pedido_usuario'),
 ]

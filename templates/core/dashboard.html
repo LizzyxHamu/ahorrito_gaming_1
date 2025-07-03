@@ -18,22 +18,22 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h4>Mi Historial de Pedidos</h4>
-            <div class="list-group">
-            {% for pedido in pedidos %}
-                <div class="list-group-item list-group-item-action bg-dark-ui text-light flex-column align-items-start mb-2">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Pedido #{{ pedido.id }}</h5>
-                        <small>{{ pedido.fecha_pedido|date:"d M, Y" }}</small>
-                    </div>
-                    <p class="mb-1">Total: ${{ pedido.total|intcomma }}</p>
-                    <small>Estado: <span class="badge bg-success">{{ pedido.get_estado_display }}</span></small>
-                </div>
-            {% empty %}
-                <div class="alert alert-info">Aún no has realizado ningún pedido.</div>
-            {% endfor %}
+    <h4>Mi Historial de Pedidos</h4>
+    <div class="list-group">
+    {% for pedido in pedidos %}
+        <a href="{% url 'cart:detalle_pedido_usuario' pedido.id %}" class="list-group-item list-group-item-action bg-dark-ui text-light flex-column align-items-start mb-2">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Pedido #{{ pedido.id }}</h5>
+                <small>{{ pedido.fecha_pedido|date:"d M, Y" }}</small>
             </div>
-        </div>
+            <p class="mb-1">Total: ${{ pedido.total|intcomma }}</p>
+            <small>Estado: <span class="badge bg-success">{{ pedido.get_estado_display }}</span></small>
+        </a>
+    {% empty %}
+        <div class="alert alert-info">Aún no has realizado ningún pedido.</div>
+    {% endfor %}
+    </div>
+</div>
     </div>
 </div>
 {% endblock %}
