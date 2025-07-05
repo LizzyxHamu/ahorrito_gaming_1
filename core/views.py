@@ -12,13 +12,14 @@ from django.views.decorators.http import require_POST
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+import logging
 
 # --- Importación para Logging ---
 import logging
 
 # --- Importaciones de tus Modelos y Formularios ---
 from .models import Producto, Categoria
-from .forms import CustomUserCreationForm, ContactoForm, UserUpdateForm
+from .forms import CustomUserCreationForm, ContactoForm, UserUpdateForm, ProfileUpdateForm
 from cart.models import Pedido
 
 # Obtener una instancia del logger para este archivo
@@ -101,11 +102,34 @@ def dashboard(request):
 
 @login_required
 def edit_profile(request):
+    """
+    Permite al usuario editar los datos de su User y de su Profile al mismo tiempo.
+    """
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=request.user)
-        if form.is_valid(): form.save(); messages.success(request, '¡Perfil actualizado!'); return redirect('core:dashboard')
-    else: form = UserUpdateForm(instance=request.user)
-    return render(request, 'core/edit_profile.html', {'form': form})
+        # Se crean instancias de ambos formularios con los datos enviados (POST) y los objetos a actualizar (instance)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        
+        # Se validan ambos formularios
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, '¡Tu perfil ha sido actualizado exitosamente!')
+            return redirect('core:dashboard')
+        else:
+            messages.error(request, 'Por favor, corrige los errores en el formulario.')
+            
+    else:
+        # Se crean formularios vacíos ligados a los datos del usuario actual
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'core/edit_profile.html', context)
+
 
 @login_required
 def wishlist_view(request):
