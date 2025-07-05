@@ -1,36 +1,39 @@
+# --- Importaciones de la Librería Estándar de Python ---
 import logging
 import hmac
 import hashlib
-import requests
 from decimal import Decimal
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from django.contrib import messages
-from django.db import transaction
+# --- Importaciones de Terceros (Django, requests) ---
+import requests
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
-from core.models import Producto
+# --- Importaciones de Nuestras Aplicaciones ---
+from core.models import Producto, Profile
 from .models import Pedido, DetallePedido
 from .cart import Cart
+from .decorators import get_cart
 
 # Configuración del logger para este módulo
 logger = logging.getLogger(__name__)
 
+
 @require_POST
-def add_to_cart(request, producto_id):
-    """
-    Añade un producto al carrito. Solo responde a peticiones POST.
-    """
+@get_cart
+def add_to_cart(request, cart, producto_id):
+    """Añade un producto al carrito y redirige a la página de origen."""
     producto = get_object_or_404(Producto, id=producto_id, activo=True)
     next_url = request.POST.get('next', reverse('core:index'))
     
     if producto.stock > 0:
-        cart = Cart(request)
         cart.add(producto=producto)
         messages.success(request, f'¡"{producto.nombre}" se ha añadido a tu carrito!')
     else:
@@ -38,50 +41,48 @@ def add_to_cart(request, producto_id):
         
     return redirect(next_url)
 
+
 @require_POST
-def remove_from_cart(request, producto_id):
-    """
-    Elimina un producto completo del carrito.
-    """
+@get_cart
+def remove_from_cart(request, cart, producto_id):
+    """Elimina un producto completo del carrito."""
     producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
     cart.remove(producto)
     messages.info(request, f'"{producto.nombre}" se ha eliminado de tu carrito.')
     return redirect('cart:view_cart')
 
+
 @require_POST
-def increment_cart_item(request, producto_id):
-    """
-    Incrementa la cantidad de un producto en el carrito en 1, validando el stock.
-    """
+@get_cart
+def increment_cart_item(request, cart, producto_id):
+    """Incrementa la cantidad de un producto en el carrito en 1, validando el stock."""
     producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
     if producto.stock > cart.cart.get(str(producto.id), {'cantidad': 0})['cantidad']:
         cart.add(producto=producto, cantidad=1)
     else:
         messages.warning(request, f"No hay más stock disponible para {producto.nombre}.")
     return redirect('cart:view_cart')
 
+
 @require_POST
-def decrement_cart_item(request, producto_id):
-    """
-    Decrementa la cantidad de un producto. Si llega a cero, lo elimina.
-    """
+@get_cart
+def decrement_cart_item(request, cart, producto_id):
+    """Decrementa la cantidad de un producto. Si llega a cero, lo elimina."""
     producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
     cart.decrement(producto=producto)
     return redirect('cart:view_cart')
 
+
 def view_cart(request):
-    """
-    Muestra la página del carrito de compras.
-    """
+    """Muestra la página del carrito de compras."""
     return render(request, 'cart/cart_detail.html')
+
 
 @login_required
 def checkout(request):
     """
-    Maneja el proceso de pago: crea el pedido y redirige a Flow.
+    Maneja el proceso de pago: valida el perfil, crea el pedido en una transacción
+    atómica y redirige a la pasarela de pago Flow.
     """
     cart = Cart(request)
     if len(cart) == 0:
@@ -98,16 +99,15 @@ def checkout(request):
         return redirect('core:index')
 
     if request.method == 'POST':
-        if not settings.FLOW_API_KEY or not settings.FLOW_SECRET_KEY:
-            messages.error(request, "La configuración de pago no está disponible. Por favor, revisa tus credenciales de Flow en el archivo .env.")
+        if not all([settings.FLOW_API_KEY, settings.FLOW_SECRET_KEY]):
+            messages.error(request, "La configuración de pago no está disponible. Contacta a soporte.")
             return redirect('cart:checkout')
 
-        with transaction.atomic():
-            try:
+        try:
+            with transaction.atomic():
                 pedido = Pedido.objects.create(usuario=request.user, total=cart.get_total_price(), estado='PENDIENTE')
                 
-                producto_ids = list(cart.cart.keys())
-                productos_en_carrito = Producto.objects.select_for_update().filter(id__in=producto_ids)
+                productos_en_carrito = Producto.objects.select_for_update().filter(id__in=list(cart.cart.keys()))
                 productos_dict = {str(p.id): p for p in productos_en_carrito}
                 
                 detalles_a_crear = []
@@ -122,40 +122,25 @@ def checkout(request):
                 DetallePedido.objects.bulk_create(detalles_a_crear)
                 Producto.objects.bulk_update(list(productos_dict.values()), ['stock'])
 
-            except Exception as e:
-                logger.error(f"Error en transacción de BD para {request.user.username}: {e}")
-                messages.error(request, f'Ocurrió un error al crear tu pedido: {e}')
-                return redirect('cart:checkout')
-        
+        except Exception as e:
+            logger.error(f"Error en transacción de BD para {request.user.username}: {e}")
+            messages.error(request, f'Ocurrió un error al crear tu pedido: {e}')
+            return redirect('cart:checkout')
+
         params = {
-            'apiKey': settings.FLOW_API_KEY,
-            'commerceOrder': str(pedido.id),
-            'subject': f'Pago Pedido #{pedido.id} - Ahorrito Gaming',
-            'currency': 'CLP',
-            'amount': str(int(pedido.total)), # Flow espera el monto como string sin decimales.
-            'email': request.user.email,
+            'apiKey': settings.FLOW_API_KEY, 'commerceOrder': str(pedido.id), 'amount': str(int(pedido.total)),
+            'subject': f'Pago Pedido #{pedido.id} - Ahorrito Gaming', 'currency': 'CLP', 'email': request.user.email,
             'urlConfirmation': request.build_absolute_uri(reverse('cart:payment_confirmation')),
             'urlReturn': request.build_absolute_uri(reverse('cart:order_success')),
             'urlFailure': request.build_absolute_uri(reverse('cart:order_failure')),
         }
         
-        # Proceso de firma robusto y explícito
-        keys = sorted(params.keys())
-        to_sign_parts = [f"{key}{params[key]}" for key in keys]
-        to_sign_string = "".join(to_sign_parts)
-        
-        signature = hmac.new(settings.FLOW_SECRET_KEY.encode('utf-8'), to_sign_string.encode('utf-8'), hashlib.sha256).hexdigest()
-        params['s'] = signature
-        
-        # --- MEJORA DE DEPURACIÓN ---
-        logger.info("===================================================================")
-        logger.info(f"PREPARANDO PETICIÓN A FLOW PARA PEDIDO #{pedido.id}")
-        logger.info(f"Parámetros enviados (sin firma): { {k:v for k,v in params.items() if k not in ['s', 'apiKey']} }")
-        logger.info(f"String usado para firmar: {to_sign_string}")
-        logger.info(f"Firma generada: {signature}")
-        logger.info("===================================================================")
-        
         try:
+            keys = sorted(params.keys())
+            to_sign_string = "".join(f"{key}{params[key]}" for key in keys)
+            signature = hmac.new(settings.FLOW_SECRET_KEY.encode('utf-8'), to_sign_string.encode('utf-8'), hashlib.sha256).hexdigest()
+            params['s'] = signature
+            
             response = requests.post('https://sandbox.flow.cl/api/payment/create', data=params, timeout=15)
             response.raise_for_status()
             response_data = response.json()
@@ -165,47 +150,19 @@ def checkout(request):
         except requests.exceptions.RequestException as e:
             pedido.estado = 'FALLIDO'; pedido.save()
             error_body = e.response.text if e.response else str(e)
-            logger.error(f"Respuesta de Flow (cuerpo): {error_body}")
+            logger.error(f"Error al conectar con Flow. Pedido #{pedido.id}. Respuesta: {error_body}")
             messages.error(request, "Hubo un error con la pasarela de pago. Por favor, verifica tus credenciales y que tu cuenta de Flow Sandbox esté activa.")
             return redirect('cart:checkout')
             
     return render(request, 'cart/checkout.html')
 
-@login_required
-def detalle_pedido_usuario(request, pedido_id):
-    pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
-    detalles = pedido.detalles.all().select_related('producto')
-    return render(request, 'cart/detalle_pedido_usuario.html', {'pedido': pedido, 'detalles': detalles})
-
-@csrf_exempt
-def order_success(request):
-    """Página de éxito a la que el usuario es redirigido por Flow."""
-    messages.success(request, '¡Gracias por tu compra! Tu pedido ha sido procesado.')
-    return render(request, 'cart/order_success.html')
-
-def order_failure(request):
-    """Página a la que el usuario es redirigido si el pago falla o es cancelado."""
-    messages.error(request, "El pago ha fallado o ha sido cancelado. Por favor, inténtalo de nuevo.")
-    return redirect('cart:view_cart')
-
-@login_required
-def detalle_pedido_usuario(request, pedido_id):
-    """Muestra el detalle de un pedido específico al usuario que lo realizó."""
-    pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
-    detalles = pedido.detalles.all().select_related('producto')
-    context = {'pedido': pedido, 'detalles': detalles}
-    return render(request, 'cart/detalle_pedido.html', context)
 @csrf_exempt
 def payment_confirmation(request):
-    """
-    Webhook que recibe la confirmación de pago asíncrona desde Flow.
-    Esta es la función que faltaba.
-    """
+    """ Webhook que recibe la confirmación de pago asíncrona desde Flow. """
     if request.method == 'POST':
         token = request.POST.get('token')
         if not token: 
-            logger.warning("Webhook de Flow recibido sin token.")
-            return HttpResponse(status=400)
+            logger.warning("Webhook de Flow recibido sin token."); return HttpResponse(status=400)
         try:
             params = {'apiKey': settings.FLOW_API_KEY, 'token': token}
             keys = sorted(params.keys())
@@ -220,20 +177,16 @@ def payment_confirmation(request):
             commerce_order_id = payment_data.get('commerceOrder')
             with transaction.atomic():
                 pedido = Pedido.objects.select_for_update().get(id=int(commerce_order_id))
-                # Estados de Flow: 1=Pendiente, 2=Pagada, 3=Rechazada, 4=Anulada
                 if payment_data.get('status') == 2 and pedido.estado == 'PENDIENTE':
-                    pedido.estado = 'PAGADO'
-                    pedido.save()
+                    pedido.estado = 'PAGADO'; pedido.save()
                     logger.info(f"Pedido #{pedido.id} confirmado como PAGADO vía webhook.")
                 elif payment_data.get('status') in [3, 4] and pedido.estado == 'PENDIENTE':
-                    pedido.estado = 'FALLIDO'
-                    pedido.save()
+                    pedido.estado = 'FALLIDO'; pedido.save()
                     logger.warning(f"Pedido #{pedido.id} marcado como FALLIDO por webhook de Flow.")
         except Pedido.DoesNotExist:
              logger.error(f"Webhook de Flow recibió confirmación para pedido inexistente: {commerce_order_id}")
         except Exception as e:
             logger.error(f"Error crítico en webhook de Flow para token {token}: {e}")
-            
     return HttpResponse(status=200)
 
 @csrf_exempt
@@ -249,6 +202,7 @@ def order_failure(request):
 
 @login_required
 def detalle_pedido_usuario(request, pedido_id):
+    """Muestra el detalle de un pedido específico al usuario que lo realizó."""
     pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
     detalles = pedido.detalles.all().select_related('producto')
     context = {'pedido': pedido, 'detalles': detalles}

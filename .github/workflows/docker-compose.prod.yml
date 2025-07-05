@@ -1,25 +1,30 @@
 version: '3.8'
 
 services:
-  # Servicio de la Base de Datos (sin cambios)
+  # --- Servicio de la Base de Datos ---
   db:
     image: mysql:8.0
+    container_name: ahorrito_db_prod
     volumes:
+      # Usamos un volumen nombrado para que los datos de la BD persistan
       - ahorrito_prod_data:/var/lib/mysql
     environment:
+      # Carga las credenciales directamente desde nuestro archivo .env
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER} # Buena práctica añadir usuario específico
-      MYSQL_PASSWORD: ${DB_PASSWORD}
     restart: unless-stopped
-  
-  # Servicio de la Aplicación Django (ahora con Gunicorn)
+
+  # --- Servicio de la Aplicación Django (con Gunicorn) ---
   web:
     build: .
-    entrypoint: /app/entrypoint.sh # Usa el script para esperar a la BD y migrar
+    container_name: ahorrito_web_prod
+    # El entrypoint se encarga de esperar a la BD, migrar y recolectar estáticos
+    entrypoint: /app/entrypoint.sh
     volumes:
+      # Volúmenes compartidos para que Nginx pueda acceder a los archivos
       - static_volume:/app/staticfiles_prod
       - media_volume:/app/media
+    # No exponemos el puerto 8000 al exterior, solo a la red interna de Docker
     expose:
       - 8000
     env_file:
@@ -28,20 +33,27 @@ services:
       - db
     restart: unless-stopped
 
-  # NUEVO SERVICIO: Nginx como Reverse Proxy
+  # --- NUEVO SERVICIO: Nginx como Reverse Proxy ---
   nginx:
-    image: nginx:1.19.0-alpine
+    image: nginx:1.21.6-alpine
+    container_name: ahorrito_nginx_prod
     ports:
-      - "80:80" # Expone el puerto 80 al mundo exterior
+      # Expone el puerto 80 (HTTP) y 443 (HTTPS) al mundo exterior
+      - "80:80"
+      - "443:443"
     volumes:
-      # Monta nuestra configuración de Nginx y los volúmenes de estáticos/media
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Monta nuestra configuración personalizada de Nginx
+      - ./nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      # Monta los volúmenes compartidos para servir los archivos directamente
       - static_volume:/app/staticfiles_prod
       - media_volume:/app/media
+      # Montaríamos los certificados SSL aquí en una configuración real
+      # - ./certs:/etc/nginx/certs
     depends_on:
       - web
     restart: unless-stopped
 
+# Volúmenes nombrados para la persistencia de datos
 volumes:
   ahorrito_prod_data:
   static_volume:
