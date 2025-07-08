@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: ahorrito_db_prod
+    volumes:
+      - ahorrito_prod_data:/var/lib/mysql
+    env_file: ./.env
+    restart: unless-stopped
+  
+  web:
+    build: .
+    container_name: ahorrito_web_prod
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - static_volume:/app/staticfiles_prod
+      - media_volume:/app/media
+    expose:
+      - 8000
+    env_file: ./.env
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.21.6-alpine
+    container_name: ahorrito_nginx_prod
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles_prod
+      - media_volume:/app/media
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  ahorrito_prod_data:
+  static_volume:
+  media_volume:

@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.11"] # Enfocamos en la versión de producción
+        python-version: ["3.11"]
 
     steps:
       - name: 1. Clonar el repositorio
@@ -32,12 +32,17 @@ jobs:
       - name: 4. LINTING: Verificar calidad de código con Flake8
         run: |
           pip install flake8
-          # Falla el build si hay errores de estilo graves
+          # Falla el build si hay errores de estilo graves o código no usado
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # Muestra advertencias para otros temas, pero no detiene el build
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: 5. EJECUTAR PRUEBAS CON REPORTE DE COBERTURA
+      - name: 5. FORMATEO: Verificar que el código esté formateado con Black
+        run: |
+          pip install black
+          black --check .
+
+      - name: 6. EJECUTAR PRUEBAS CON REPORTE DE COBERTURA
         run: |
           pip install coverage
           # Ejecuta las pruebas bajo el monitor de cobertura

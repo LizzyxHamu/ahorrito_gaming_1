@@ -31,5 +31,5 @@ COPY . .
 # Expone el puerto que usará Gunicorn
 EXPOSE 8000
 
-# Define el punto de entrada que se ejecutará al iniciar el contenedor
+# Define el punto de entrada
 ENTRYPOINT ["/app/entrypoint.sh"]
