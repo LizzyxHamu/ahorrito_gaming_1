@@ -1,0 +1,63 @@
+{% extends "dashboard/base_admin.html" %}
+{% load humanize %}
+{% block admin_title %}Detalle del Pedido #{{ pedido.id }}{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Detalle del Pedido <span class="text-primary">#{{ pedido.id }}</span></h1>
+    <a href="{% url 'dashboard:lista_pedidos' %}" class="btn btn-outline-light">‹ Volver al Listado</a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card bg-dark-card">
+            <div class="card-header">Productos del Pedido</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for detalle in detalles %}
+                    <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center px-0">
+                        <div>
+                            {{ detalle.producto.nombre }}
+                            <br>
+                            <small class="text-muted">Cant: {{ detalle.cantidad }} | P/U: ${{ detalle.precio_unitario|intcomma }}</small>
+                        </div>
+                        <span class="fw-bold">${% widthratio detalle.precio_unitario 1 detalle.cantidad as subtotal %}{{ subtotal|intcomma }}</span>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item bg-dark-ui mt-2 d-flex justify-content-between fs-4">
+                        <strong>Total:</strong>
+                        <strong class="text-primary">${{ pedido.total|intcomma }}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-dark-card">
+            <div class="card-header">Información del Cliente</div>
+            <div class="card-body">
+                <p><strong>Usuario:</strong> {{ pedido.usuario.username }}</p>
+                <p><strong>Nombre:</strong> {{ pedido.usuario.first_name }} {{ pedido.usuario.last_name }}</p>
+                <p><strong>Email:</strong> {{ pedido.usuario.email }}</p>
+            </div>
+        </div>
+        <div class="card bg-dark-card mt-3">
+            <div class="card-header">Gestionar Estado del Pedido</div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Cambiar Estado:</label>
+                        <select name="estado" id="estado" class="form-select">
+                            {% for choice_val, choice_text in estado_choices %}
+                                <option value="{{ choice_val }}" {% if pedido.estado == choice_val %}selected{% endif %}>{{ choice_text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Actualizar Estado</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

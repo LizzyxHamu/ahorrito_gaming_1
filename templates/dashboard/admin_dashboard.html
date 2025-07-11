@@ -1,0 +1,168 @@
+{% extends "dashboard/base_admin.html" %}
+
+{% block admin_title %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<h1 class="mb-4">Dashboard Principal</h1>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-dark-card h-100 shadow">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-primary text-uppercase mb-1">Ventas (Mes Actual)</div>
+                        <div class="h5 mb-0 fw-bold text-light">$1,250,000</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-white-50"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-dark-card h-100 shadow">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-success text-uppercase mb-1">Pedidos Nuevos</div>
+                        <div class="h5 mb-0 fw-bold text-light">18</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-shopping-basket fa-2x text-white-50"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-dark-card h-100 shadow">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-info text-uppercase mb-1">Nuevos Clientes</div>
+                        <div class="h5 mb-0 fw-bold text-light">7</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-users fa-2x text-white-50"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-dark-card h-100 shadow">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-warning text-uppercase mb-1">Tickets de Soporte</div>
+                        <div class="h5 mb-0 fw-bold text-light">3</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-comments fa-2x text-white-50"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="card bg-dark-card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Ventas Mensuales</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area" style="height: 320px;">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+        <div class="card bg-dark-card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Ventas por Plataforma</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-pie pt-4" style="height: 320px;">
+                    <canvas id="platformChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const textColor = 'rgba(255, 255, 255, 0.8)';
+    const gridColor = 'rgba(255, 255, 255, 0.1)';
+
+    // Gráfico de Ventas Mensuales (Líneas)
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
+            datasets: [{
+                label: "Ventas",
+                data: [500000, 750000, 600000, 900000, 850000, 1100000, 1250000],
+                backgroundColor: 'rgba(123, 76, 255, 0.1)',
+                borderColor: 'rgba(123, 76, 255, 1)',
+                tension: 0.3,
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                x: {
+                    ticks: { color: textColor },
+                    grid: { color: 'transparent' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: textColor }
+                },
+                tooltip: {
+                    titleColor: '#fff',
+                    bodyColor: '#fff'
+                }
+            }
+        }
+    });
+
+    // Gráfico de Plataformas (Dona)
+    const platformCtx = document.getElementById('platformChart').getContext('2d');
+    const platformChart = new Chart(platformCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['PC', 'PlayStation', 'Nintendo Switch', 'Accesorios'],
+            datasets: [{
+                data: [40, 35, 20, 5],
+                backgroundColor: ['#7b4cff', '#00e5ff', '#ff4c8e', '#f59e0b'],
+                borderColor: '#1e1e1e', // Color del fondo de la tarjeta para el borde
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: textColor,
+                        padding: 20
+                    }
+                }
+            }
+        }
+    });
+
+});
+</script>
+{% endblock %}

@@ -1,42 +1,44 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'core:index' %}">
-            <i class="fas fa-gamepad me-2 text-primary"></i>
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'core:index' %}">
+            <img src="{% static 'img/logo.png' %}" alt="Ahorrito Gaming Logo" style="height: 40px; margin-right: 10px;">
             <span style="font-family: 'Orbitron', sans-serif; font-weight: 700;">Ahorrito Gaming</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            
-            <form class="d-flex mx-auto" style="width: 50%;" action="{% url 'core:search_results' %}" method="get">
+            <form class="d-flex mx-auto position-relative" style="width: 50%;" action="{% url 'core:search_results' %}" method="get">
                 <div class="input-group">
-                    <input class="form-control search-bar" id="search-input" type="search" name="q" placeholder="Buscar juegos..." autocomplete="off">
+                    <input class="form-control" id="search-input" type="search" name="q" placeholder="Buscar juegos..." autocomplete="off">
                     <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                 </div>
                 <div id="suggestions-box" class="list-group position-absolute w-100" style="top: 100%; z-index: 1000;"></div>
             </form>
-
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'cart:view_cart' %}">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="ms-1">Carrito</span>
-                        {% with total_items=cart|length %}
-                            {% if total_items > 0 %}
-                                <span class="badge rounded-pill bg-primary ms-2">{{ total_items }}</span>
-                            {% endif %}
-                        {% endwith %}
+                        {% with total_items=cart|length %}{% if total_items > 0 %}
+                            <span class="badge rounded-pill bg-primary ms-2">{{ total_items }}</span>
+                        {% endif %}{% endwith %}
                     </a>
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle me-1"></i>Hola, {{ user.username }}
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userMenuDropdown">
-                        <li><a class="dropdown-item" href="{% url 'core:dashboard' %}">Mi Cuenta</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        {% if user.is_staff %}
+                          <li><a class="dropdown-item" href="{% url 'dashboard:admin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i>Panel de Gestión</a></li>
+                          <li><a class="dropdown-item" href="/admin" target="_blank"><i class="fas fa-cogs me-2"></i>Admin Avanzado (Django)</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{% url 'core:dashboard' %}">Mi Cuenta (Mis Pedidos)</a></li>
+                            <li><a class="dropdown-item" href="{% url 'core:wishlist' %}">Mi Lista de Deseos</a></li>
+                        {% endif %}
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{% url 'core:logout' %}" method="post" class="d-inline">
@@ -48,10 +50,10 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:login' %}"><i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión</a>
+                    <a class="nav-link" href="{% url 'core:login' %}">Iniciar Sesión</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-primary ms-2" href="{% url 'core:registro' %}"><i class="fas fa-user-plus me-1"></i>Registrarse</a>
+                    <a class="btn btn-primary ms-2" href="{% url 'core:registro' %}">Registrarse</a>
                 </li>
                 {% endif %}
             </ul>

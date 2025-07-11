@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Editar Perfil - Ahorrito Gaming{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card bg-dark-card">
+                <div class="card-body">
+                    <h2 class="mb-4">Editar Mi Perfil</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <h4 class="text-primary mb-3">Datos de la Cuenta</h4>
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de usuario (no se puede cambiar)</label>
+                            <input type="text" class="form-control" value="{{ user.username }}" readonly disabled>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3"><label class="form-label">Nombre</label>{{ user_form.first_name }}</div>
+                            <div class="col-md-6 mb-3"><label class="form-label">Apellido</label>{{ user_form.last_name }}</div>
+                        </div>
+                        <div class="mb-4"><label class="form-label">Email</label>{{ user_form.email }}</div>
+                        
+                        <hr class="border-secondary">
+
+                        <h4 class="text-primary mb-3 mt-4">Datos de Contacto y Despacho</h4>
+                        <div class="mb-3"><label class="form-label">RUT</label>{{ profile_form.rut }}</div>
+                        <div class="mb-3"><label class="form-label">Teléfono</label>{{ profile_form.telefono }}</div>
+                        <div class="mb-3"><label class="form-label">Dirección</label>{{ profile_form.direccion }}</div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'core:dashboard' %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

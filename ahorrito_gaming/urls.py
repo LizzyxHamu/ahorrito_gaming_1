@@ -5,8 +5,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls', namespace='core')),
     path('cart/', include('cart.urls', namespace='cart')),
+    path('gestion/', include('dashboard.urls', namespace='dashboard')),
+    # Dejamos una sola inclusión para la app 'core' al final
+    path('', include('core.urls', namespace='core')),
 ]
+
+# Esta sección es correcta y permite que las imágenes funcionen cuando DEBUG=True
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

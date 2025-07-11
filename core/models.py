@@ -2,6 +2,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -10,6 +13,7 @@ class Categoria(models.Model):
         if not self.slug: self.slug = slugify(self.nombre)
         super().save(*args, **kwargs)
     def __str__(self): return self.nombre
+    def get_absolute_url(self): return reverse('core:categoria', kwargs={'categoria_slug': self.slug})
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=200, unique=True, db_index=True)
@@ -24,7 +28,20 @@ class Producto(models.Model):
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)
     def __str__(self): return self.nombre
+    def get_absolute_url(self): return reverse('core:detalle_producto', kwargs={'producto_id': self.id})
     def clean(self):
-        if self.precio <= 0: raise ValidationError({'precio': 'El precio debe ser un número positivo.'})
-    def save(self, *args, **kwargs):
-        self.full_clean(); super().save(*args, **kwargs)
+        if self.precio < 0: raise ValidationError({'precio': 'El precio no puede ser negativo.'})
+    def save(self, *args, **kwargs): self.full_clean(); super().save(*args, **kwargs)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rut = models.CharField(max_length=12, blank=True, null=True)
+    direccion = models.CharField(max_length=255, blank=True, null=True)
+    telefono = models.CharField(max_length=15, blank=True, null=True)
+    def __str__(self): return f'Perfil de {self.user.username}'
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()

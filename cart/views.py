@@ -1,207 +1,201 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.db import transaction
-from django.conf import settings
-from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, JsonResponse
-from decimal import Decimal
-import requests
+import logging
 import hmac
 import hashlib
-import logging
+import requests
+from decimal import Decimal
 
-from core.models import Producto
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from core.models import Producto, Profile
 from .models import Pedido, DetallePedido
 from .cart import Cart
-# Configurar un logger para registrar eventos importantes o errores
+from .decorators import get_cart
+
 logger = logging.getLogger(__name__)
 
-# --- VISTAS DEL CARRITO ---
-def add_to_cart(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
-    cart.add(producto=producto)
-    
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'cart_total_items': len(cart)})
-        
-    return redirect(request.META.get('HTTP_REFERER', 'core:index'))
 
-def remove_from_cart(request, producto_id):
+@require_POST
+@get_cart
+def add_to_cart(request, cart, producto_id):
+    """Añade un producto al carrito."""
+    producto = get_object_or_404(Producto, id=producto_id, activo=True)
+    next_url = request.POST.get('next', reverse('core:index'))
+    
+    current_quantity = cart.cart.get(str(producto.id), {'cantidad': 0})['cantidad']
+    if producto.stock > current_quantity:
+        cart.add(producto=producto)
+        messages.success(request, f'¡"{producto.nombre}" se ha añadido a tu carrito!')
+    else:
+        messages.error(request, f'"{producto.nombre}" no tiene más stock disponible.')
+    return redirect(next_url)
+
+@require_POST
+@get_cart
+def remove_from_cart(request, cart, producto_id):
+    """Elimina un producto completo del carrito."""
     producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
     cart.remove(producto)
+    messages.info(request, f'"{producto.nombre}" se ha eliminado de tu carrito.')
     return redirect('cart:view_cart')
 
-def decrement_cart_item(request, producto_id):
+@require_POST
+@get_cart
+def increment_cart_item(request, cart, producto_id):
+    """Incrementa la cantidad de un producto en 1, validando el stock."""
     producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
+    if producto.stock > cart.cart.get(str(producto.id), {'cantidad': 0})['cantidad']:
+        cart.add(producto=producto, cantidad=1)
+    else:
+        messages.warning(request, f"No hay más stock disponible para {producto.nombre}.")
+    return redirect('cart:view_cart')
+
+@require_POST
+@get_cart
+def decrement_cart_item(request, cart, producto_id):
+    """Decrementa la cantidad de un producto. Si llega a cero, lo elimina."""
+    producto = get_object_or_404(Producto, id=producto_id)
     cart.decrement(producto=producto)
     return redirect('cart:view_cart')
 
 def view_cart(request):
+    """Muestra la página del carrito de compras."""
     return render(request, 'cart/cart_detail.html')
 
-# --- VISTAS DEL PROCESO DE PAGO ---
 @login_required
 def checkout(request):
+    """Maneja el proceso de pago: valida perfil, crea pedido y redirige a Flow."""
     cart = Cart(request)
     if len(cart) == 0:
         messages.error(request, "Tu carrito está vacío.")
-        return redirect('cart:view_cart')
+        return redirect('core:index')
+
+    try:
+        profile = request.user.profile
+        if not all([profile.rut, profile.direccion, profile.telefono]):
+            messages.warning(request, 'Por favor, completa tu perfil con tu RUT, dirección y teléfono para poder comprar.')
+            return redirect('core:edit_profile')
+    except Profile.DoesNotExist:
+        messages.error(request, 'Error al cargar tu perfil. Por favor, contacta a soporte.')
+        return redirect('core:index')
 
     if request.method == 'POST':
+        if not all([settings.FLOW_API_KEY, settings.FLOW_SECRET_KEY]):
+            messages.error(request, "La configuración de pago no está disponible.")
+            return redirect('cart:checkout')
+
         try:
             with transaction.atomic():
-                producto_ids = cart.cart.keys()
-                productos_en_carrito = Producto.objects.select_for_update().filter(id__in=producto_ids)
+                pedido = Pedido.objects.create(usuario=request.user, total=cart.get_total_price(), estado='PENDIENTE')
+                
+                productos_en_carrito = Producto.objects.select_for_update().filter(id__in=list(cart.cart.keys()))
                 productos_dict = {str(p.id): p for p in productos_en_carrito}
-
-                total_pedido_calculado = cart.get_total_price()
-
-                pedido = Pedido.objects.create(
-                    usuario=request.user, 
-                    total=total_pedido_calculado, 
-                    estado='PENDIENTE'
-                )
                 
-                detalles_pedido_a_crear = []
-                for producto_id, item_carrito in cart.cart.items():
+                detalles_a_crear = []
+                for producto_id, item in cart.cart.items():
                     producto = productos_dict.get(producto_id)
-                    cantidad_comprada = item_carrito['cantidad']
-
-                    if producto.stock < cantidad_comprada:
-                        raise Exception(f"Stock insuficiente para {producto.nombre}")
-
-                    detalles_pedido_a_crear.append(
-                        DetallePedido(
-                            pedido=pedido,
-                            producto=producto,
-                            cantidad=cantidad_comprada,
-                            precio_unitario=producto.precio
-                        )
-                    )
-                    producto.stock -= cantidad_comprada
+                    if not producto or producto.stock < item['cantidad']:
+                        raise ValueError(f"Stock insuficiente para {producto.nombre if producto else 'un producto eliminado'}.")
+                    
+                    detalles_a_crear.append(DetallePedido(pedido=pedido, producto=producto, cantidad=item['cantidad'], precio_unitario=producto.precio))
+                    producto.stock -= item['cantidad']
                 
-                DetallePedido.objects.bulk_create(detalles_pedido_a_crear)
+                DetallePedido.objects.bulk_create(detalles_a_crear)
                 Producto.objects.bulk_update(list(productos_dict.values()), ['stock'])
-
-            flow_url_create = 'https://sandbox.flow.cl/api/payment/create'
-            url_confirmation = request.build_absolute_uri(reverse('cart:payment_confirmation'))
-            url_return = request.build_absolute_uri(reverse('cart:order_success'))
-            
-            params = {
-                'apiKey': settings.FLOW_API_KEY,
-                'commerceOrder': str(pedido.id),
-                'amount': int(pedido.total),
-                'subject': f'Pago Pedido #{pedido.id} Ahorrito Gaming',
-                'currency': 'CLP',
-                'email': request.user.email,
-                'urlConfirmation': url_confirmation,
-                'urlReturn': url_return,
-            }
-            
-            keys = sorted(params.keys())
-            to_sign = "".join(f"{k}{params[k]}" for k in keys)
-            signature = hmac.new(settings.FLOW_SECRET_KEY.encode('utf-8'), to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
-            params['s'] = signature
-            
-            response = requests.post(flow_url_create, data=params)
-            
-            if response.status_code == 200:
-                response_data = response.json()
-                redirect_url = f"{response_data['url']}?token={response_data['token']}"
-                cart.clear()
-                return redirect(redirect_url)
-            else:
-                pedido.estado = 'FALLIDO'
-                pedido.save()
-                messages.error(request, f"Error al conectar con Flow: {response.text}")
-                return redirect('cart:checkout')
-
+        except ValueError as e:
+            logger.error(f"Error de valor en checkout para {request.user.username}: {e}")
+            messages.error(request, str(e))
+            return redirect('cart:view_cart')
         except Exception as e:
-            logger.error(f"Error en checkout para usuario {request.user.username}: {str(e)}")
-            messages.error(request, f'Ocurrió un error inesperado al procesar tu pedido.')
+            logger.error(f"Error en transacción de BD para {request.user.username}: {e}")
+            messages.error(request, f'Ocurrió un error inesperado al crear tu pedido.')
             return redirect('cart:checkout')
-    
+        
+        params = {
+            'apiKey': settings.FLOW_API_KEY, 'commerceOrder': str(pedido.id), 'subject': f'Pago Pedido #{pedido.id}',
+            'currency': 'CLP', 'amount': str(int(pedido.total)), 'email': request.user.email,
+            'urlConfirmation': request.build_absolute_uri(reverse('cart:payment_confirmation')),
+            'urlReturn': request.build_absolute_uri(reverse('cart:order_success')),
+            'urlFailure': request.build_absolute_uri(reverse('cart:order_failure')),
+        }
+        
+        try:
+            keys = sorted(params.keys())
+            to_sign_string = "".join(f"{key}{params[key]}" for key in keys)
+            signature = hmac.new(settings.FLOW_SECRET_KEY.encode('utf-8'), to_sign_string.encode('utf-8'), hashlib.sha256).hexdigest()
+            params['s'] = signature
+
+            response = requests.post('https://sandbox.flow.cl/api/payment/create', data=params, timeout=15)
+            response.raise_for_status()
+            response_data = response.json()
+            redirect_url = f"{response_data.get('url')}?token={response_data.get('token')}"
+            cart.clear()
+            return redirect(redirect_url)
+        except requests.exceptions.RequestException as e:
+            pedido.estado = 'FALLIDO'; pedido.save()
+            error_body = e.response.text if e.response else str(e)
+            logger.error(f"Error al conectar con Flow. Pedido #{pedido.id}. Respuesta: {error_body}")
+            messages.error(request, "Error con la pasarela de pago. Por favor, revisa tus credenciales de Flow.")
+            return redirect('cart:checkout')
+            
     return render(request, 'cart/checkout.html')
+
 
 @csrf_exempt
 def payment_confirmation(request):
+    """ Webhook que recibe la confirmación de pago asíncrona desde Flow. """
     if request.method == 'POST':
         token = request.POST.get('token')
-        if not token:
+        if not token: 
             logger.warning("Webhook de Flow recibido sin token.")
             return HttpResponse(status=400)
-
         try:
-            flow_url_status = 'https://sandbox.flow.cl/api/payment/getStatus'
             params = {'apiKey': settings.FLOW_API_KEY, 'token': token}
             keys = sorted(params.keys())
             to_sign = "".join(f"{k}{params[k]}" for k in keys)
             signature = hmac.new(settings.FLOW_SECRET_KEY.encode('utf-8'), to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
             params['s'] = signature
-            
-            response = requests.get(flow_url_status, params=params)
-            
-            if response.status_code == 200:
-                payment_data = response.json()
-                commerce_order_id = payment_data.get('commerceOrder')
-                
-                if payment_data.get('status') == 2: # 2 = PAGADO
-                    with transaction.atomic():
-                        pedido = Pedido.objects.select_for_update().get(id=int(commerce_order_id))
-                        if pedido.estado == 'PENDIENTE':
-                            pedido.estado = 'PAGADO'
-                            pedido.save()
-                            logger.info(f"Pedido #{pedido.id} confirmado como PAGADO.")
-                else: # Pago rechazado o fallido
-                     with transaction.atomic():
-                        pedido = Pedido.objects.select_for_update().get(id=int(commerce_order_id))
-                        if pedido.estado == 'PENDIENTE':
-                            pedido.estado = 'FALLIDO'
-                            pedido.save()
-                            logger.warning(f"Pedido #{pedido.id} marcado como FALLIDO por Flow.")
-            else:
-                logger.error(f"Error al verificar estado con Flow para token {token}: {response.text}")
 
-        except Exception as e:
-            logger.error(f"Error en webhook de Flow para token {token}: {e}")
+            response = requests.get('https://sandbox.flow.cl/api/payment/getStatus', params=params, timeout=10)
+            response.raise_for_status()
+            payment_data = response.json()
             
+            commerce_order_id = payment_data.get('commerceOrder')
+            with transaction.atomic():
+                pedido = Pedido.objects.select_for_update().get(id=int(commerce_order_id))
+                if payment_data.get('status') == 2 and pedido.estado == 'PENDIENTE':
+                    pedido.estado = 'PAGADO'; pedido.save()
+                    logger.info(f"Pedido #{pedido.id} confirmado como PAGADO vía webhook.")
+                elif payment_data.get('status') in [3, 4] and pedido.estado == 'PENDIENTE':
+                    pedido.estado = 'FALLIDO'; pedido.save()
+                    logger.warning(f"Pedido #{pedido.id} marcado como FALLIDO por webhook de Flow.")
+        except Pedido.DoesNotExist:
+             logger.error(f"Webhook de Flow recibió confirmación para pedido inexistente: {commerce_order_id}")
+        except Exception as e:
+            logger.error(f"Error crítico en webhook de Flow para token {token}: {e}")
     return HttpResponse(status=200)
 
 @csrf_exempt
 def order_success(request):
-    token = request.POST.get('token') or request.GET.get('token')
-    if token:
-        messages.success(request, '¡Gracias por tu compra! Tu pedido está siendo procesado. Recibirás una confirmación en breve.')
-    else:
-        # Esto puede pasar si el usuario vuelve manualmente sin un token
-        messages.info(request, "Si has completado un pago, serás notificado cuando se confirme.")
-        
+    """Página de éxito a la que el usuario es redirigido por Flow."""
+    messages.success(request, '¡Gracias por tu compra!')
     return render(request, 'cart/order_success.html')
 
-# --- Código completo de todas las vistas para evitar omisiones ---
-
-def add_to_cart(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
-    cart.add(producto=producto)
-    return redirect(request.META.get('HTTP_REFERER', 'core:index'))
-
-def remove_from_cart(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
-    cart.remove(producto)
+def order_failure(request):
+    """Página a la que el usuario es redirigido si el pago falla o es cancelado."""
+    messages.error(request, "El pago ha fallado o fue cancelado.")
     return redirect('cart:view_cart')
 
-def decrement_cart_item(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    cart = Cart(request)
-    cart.decrement(producto=producto)
-    return redirect('cart:view_cart')
-
-def view_cart(request):
-    return render(request, 'cart/cart_detail.html')
+@login_required
+def detalle_pedido_usuario(request, pedido_id):
+    """Muestra el detalle de un pedido específico al usuario que lo realizó."""
+    pedido = get_object_or_404(Pedido, id=pedido_id, usuario=request.user)
+    detalles = pedido.detalles.all().select_related('producto')
+    return render(request, 'cart/detalle_pedido_usuario.html', {'pedido': pedido, 'detalles': detalles})

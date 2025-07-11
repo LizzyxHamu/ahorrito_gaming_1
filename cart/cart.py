@@ -3,6 +3,9 @@ from django.conf import settings
 from core.models import Producto
 
 class Cart:
+    """
+    Una clase que gestiona el carrito de compras en la sesión del usuario.
+    """
     def __init__(self, request):
         """
         Inicializa el carrito.
@@ -25,15 +28,17 @@ class Cart:
             self.cart[producto_id]['cantidad'] = cantidad
         else:
             self.cart[producto_id]['cantidad'] += cantidad
-        
         self.save()
 
     def save(self):
+        """
+        Marca la sesión como "modificada" para asegurar que se guarde en cada cambio.
+        """
         self.session.modified = True
 
     def remove(self, producto):
         """
-        Elimina un producto del carrito.
+        Elimina un producto completo del carrito.
         """
         producto_id = str(producto.id)
         if producto_id in self.cart:
@@ -49,14 +54,31 @@ class Cart:
             self.cart[producto_id]['cantidad'] -= 1
             if self.cart[producto_id]['cantidad'] <= 0:
                 self.remove(producto)
-            self.save()
+            else:
+                self.save()
+
+    def clear(self):
+        """
+        Elimina el carrito completo de la sesión y resetea el objeto local.
+        """
+        # Borra la clave del carrito de la sesión de Django
+        if settings.CART_SESSION_ID in self.session:
+            del self.session[settings.CART_SESSION_ID]
+        
+        # --- ESTA ES LA CORRECCIÓN CLAVE ---
+        # Resetea el carrito en la instancia actual de la clase a un diccionario vacío.
+        self.cart = {}
+        
+        # Guarda los cambios en la sesión
+        self.save()
 
     def __iter__(self):
         """
-        Itera sobre los ítems en el carrito y obtiene los productos desde la base de datos.
+        Itera sobre los productos en el carrito y obtiene los objetos desde la BD.
         """
         producto_ids = self.cart.keys()
-        productos = Producto.objects.filter(id__in=producto_ids)
+        # Optimizamos la consulta para traer la categoría en el mismo viaje a la BD
+        productos = Producto.objects.filter(id__in=producto_ids).select_related('categoria')
         cart = self.cart.copy()
         
         for producto in productos:
@@ -69,22 +91,15 @@ class Cart:
 
     def __len__(self):
         """
-        Cuenta todos los ítems en el carrito (suma de cantidades).
+        Cuenta el total de ítems en el carrito (la suma de las cantidades).
         """
         return sum(item['cantidad'] for item in self.cart.values())
 
     def get_total_price(self):
         """
-        Calcula el precio total del carrito, siempre usando los precios de la base de datos.
+        Calcula el precio total de todos los productos en el carrito.
         """
         producto_ids = self.cart.keys()
         productos = Producto.objects.filter(id__in=producto_ids)
-        return sum(producto.precio * self.cart[str(producto.id)]['cantidad'] for producto in productos)
-
-    def clear(self):
-        """
-        Elimina el carrito de la sesión.
-        """
-        if settings.CART_SESSION_ID in self.session:
-            del self.session[settings.CART_SESSION_ID]
-            self.save()
+        # Usamos un generador para ser más eficientes en memoria
+        return sum(Decimal(p.precio) * self.cart[str(p.id)]['cantidad'] for p in productos)

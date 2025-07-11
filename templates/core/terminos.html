@@ -5,21 +5,55 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="mb-4">Términos y Condiciones</h1>
-    
-    <div class="bg-dark p-4 rounded mb-4">
-        <p class="text-muted">Última actualización: 15 de junio, 2024</p>
-        
-        <div class="mb-4">
-            <h4>1. Introducción</h4>
-            <p>Bienvenido a Ahorrito Gaming. Estos Términos y Condiciones rigen tu uso de nuestro sitio web y los servicios que ofrecemos. Al acceder a nuestro sitio o utilizar nuestros servicios, aceptas estos términos en su totalidad. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestro sitio web.</p>
-        </div>
-        
-        <div class="row mt-4">
-            <div class="col-md-6 mx-auto text-center">
-                <p>Si tienes alguna pregunta sobre nuestros Términos y Condiciones, no dudes en contactarnos:</p>
-                <a href="#" class="btn btn-primary">Contactar soporte</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <h1 class="text-center mb-4 text-primary">Términos y Condiciones</h1>
+            <p class="text-center text-muted">Última actualización: 20 de junio de 2025</p>
+
+            <p class="lead text-center mb-5">
+                ¡Hola! Queremos que tu experiencia en Ahorrito Gaming sea increíble y, sobre todo, transparente. Al utilizar nuestro sitio y comprar con nosotros, aceptas estos términos, que están diseñados para ser justos y claros, siempre respetando tus derechos como consumidor en Chile.
+            </p>
+
+            <hr class="my-5">
+
+            <h4 class="mt-4">1. Aceptación de los Términos</h4>
+            <p>Al navegar o realizar una compra en www.ahorritogaming.cl, confirmas que has leído, entiendes y aceptas estar vinculado por estos Términos y Condiciones y nuestra <a href="{% url 'core:privacidad' %}">Política de Privacidad</a>.</p>
+
+            <h4 class="mt-4">2. Productos y Entrega</h4>
+            <p>Ahorrito Gaming se especializa en la venta de bienes digitales, como claves de activación para videojuegos (CD-Keys). Una vez que tu pago es procesado y verificado, la clave digital de tu producto se entrega de forma inmediata y automática a tu cuenta de usuario y/o correo electrónico registrado. Al ser un producto digital, su uso es instantáneo.</p>
+
+            <h4 class="mt-4">3. Política de Devoluciones y Garantía Legal (Ley del Consumidor en Chile)</h4>
+            <p>Para nosotros, tu confianza es lo más importante. Por eso, nuestra política se rige estrictamente por la <strong>Ley N° 19.496 de Protección de los Derechos de los Consumidores</strong>.</p>
+            <ul>
+                <li>
+                    <strong>Garantía Legal:</strong> Tienes derecho a la garantía legal si la clave digital que recibes es defectuosa. Esto significa si la clave es inválida, ya ha sido usada o no corresponde al producto que compraste. En estos casos, y dentro de los 6 meses desde la compra, tienes derecho a solicitar la reparación (una nueva clave funcional), el cambio por otro producto o la devolución del dinero, previo diagnóstico de nuestro equipo de soporte.
+                </li>
+                <li class="mt-2">
+                    <strong>Derecho a Retracto:</strong> La ley chilena establece un derecho a retracto de 10 días para compras a distancia. Sin embargo, esta misma ley <strong>excluye los bienes que, por su naturaleza, no puedan ser devueltos o puedan ser copiados o duplicados con carácter inmediato</strong>. Las claves de activación de videojuegos caen directamente en esta categoría.
+                </li>
+            </ul>
+            <div class="alert alert-info">
+                <strong>En términos simples y amigables:</strong> Piensa en la clave digital como un "raspe" de una tarjeta de prepago. Una vez que la clave ha sido revelada y entregada en tu cuenta, no podemos aceptar devoluciones o retractos, ya que no hay forma de garantizar que no ha sido o será utilizada. La única excepción es si la clave misma presenta una falla, caso en el cual tu garantía legal te protege completamente.
             </div>
+
+            <h4 class="mt-4">4. Precios y Pagos</h4>
+            <p>Todos los precios están expresados en pesos chilenos (CLP) e incluyen los impuestos aplicables. El precio final es el que se muestra al momento de confirmar tu compra. Los pagos son procesados a través de pasarelas seguras y reconocidas como Flow.</p>
+
+            <h4 class="mt-4">5. Propiedad Intelectual</h4>
+            <p>Los logos, textos y diseño de Ahorrito Gaming son de nuestra propiedad. Las marcas, imágenes y licencias de los videojuegos son propiedad de sus respectivos desarrolladores y distribuidores (publishers). Nosotros solo actuamos como un canal de venta autorizado para sus productos.</p>
+
+            <h4 class="mt-4">6. Jurisdicción y Ley Aplicable</h4>
+            <p>
+                Para todos los efectos legales, al comprar en nuestro sitio aceptas que esta transacción se rige por las leyes vigentes en la <strong>República de Chile</strong>. Cualquier dificultad o controversia que se suscite entre las partes será de competencia de los Tribunales Ordinarios de Justicia de la ciudad y comuna de Santiago.
+            </p>
+            
+            <div class="text-center mt-5 pt-4 border-top">
+                <a href="{% url 'core:index' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo Ahorrito Gaming" class="about-us-logo">
+                </a>
+            </div>
+            
         </div>
     </div>
 </div>

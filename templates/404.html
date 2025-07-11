@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Página No Encontrada{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <img src="{% static 'img/logo_404.png' %}" alt="Logo de Ahorrito Gaming Triste" style="max-width: 200px; opacity: 0.7;" class="mb-4">
+    <h1 class="display-1" style="font-size: 8rem; font-weight: 700; color: var(--primary);">404</h1>
+    <h2 class="display-4">Página No Encontrada</h2>
+    <p class="lead text-white-50 mt-3">¡Ups! Parece que el link que buscas se fue a otra dimensión.</p>
+    <p>No te preocupes, puedes volver a la base y seguir buscando las mejores ofertas.</p>
+    <a href="{% url 'core:index' %}" class="btn btn-primary btn-lg mt-4">
+        <i class="fas fa-home me-2"></i>Volver al Inicio
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Detalle del Pedido #{{ pedido.id }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Detalle del Pedido <span class="text-primary">#{{ pedido.id }}</span></h1>
+        <a href="{% url 'core:dashboard' %}" class="btn btn-outline-light">‹ Volver a Mis Pedidos</a>
+    </div>
+    
+    <div class="card bg-dark-card shadow-sm">
+        <div class="card-header d-flex justify-content-between">
+            <span>Fecha: {{ pedido.fecha_pedido|date:"d F, Y" }}</span>
+            <span>Estado: <span class="badge bg-success">{{ pedido.get_estado_display }}</span></span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-3">Productos Comprados</h5>
+            <ul class="list-group list-group-flush">
+                {% for detalle in detalles %}
+                <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center px-0">
+                    <div>
+                        <a href="{{ detalle.producto.get_absolute_url }}">{{ detalle.producto.nombre }}</a>
+                        <br>
+                        <small class="text-muted">Cantidad: {{ detalle.cantidad }} | Precio Unitario: ${{ detalle.precio_unitario|intcomma }}</small>
+                    </div>
+                    <span class="fw-bold fs-5">${% widthratio detalle.precio_unitario 1 detalle.cantidad as subtotal %}{{ subtotal|intcomma }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="card-footer fs-4 d-flex justify-content-between">
+            <strong>Total del Pedido:</strong>
+            <strong class="text-primary">${{ pedido.total|intcomma }}</strong>
+        </div>
+    </div>
+</div>
+{% endblock %}

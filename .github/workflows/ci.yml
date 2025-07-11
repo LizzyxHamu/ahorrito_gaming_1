@@ -1,0 +1,51 @@
+# Nombre del Flujo de Trabajo
+name: Django CI/CD Pipeline Profesional
+
+# Eventos que disparan el flujo de trabajo
+on:
+  push:
+    branches: [ "main", "feature/ramita_1" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test_and_lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - name: 1. Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar el entorno de Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: 3. Instalar dependencias del proyecto
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 4. LINTING: Verificar calidad de código con Flake8
+        run: |
+          pip install flake8
+          # Falla el build si hay errores de estilo graves o código no usado
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Muestra advertencias para otros temas, pero no detiene el build
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: 5. FORMATEO: Verificar que el código esté formateado con Black
+        run: |
+          pip install black
+          black --check .
+
+      - name: 6. EJECUTAR PRUEBAS CON REPORTE DE COBERTURA
+        run: |
+          pip install coverage
+          # Ejecuta las pruebas bajo el monitor de cobertura
+          coverage run manage.py test
+          # Genera un reporte en la terminal. Falla si la cobertura es menor al 70%
+          coverage report --fail-under=70

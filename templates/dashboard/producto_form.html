@@ -1,0 +1,32 @@
+{% extends "dashboard/base_admin.html" %}
+{% block admin_title %}{{ accion }} Producto{% endblock %}
+
+{% block admin_content %}
+<h1 class="mb-4">{{ accion }} Producto</h1>
+<div class="card bg-dark-card">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">{{ form.nombre.label_tag }} {{ form.nombre }}</div>
+                    <div class="mb-3">{{ form.descripcion.label_tag }} {{ form.descripcion }}</div>
+                    <div class="mb-3">{{ form.tags.label_tag }} {{ form.tags }}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">{{ form.precio.label_tag }} {{ form.precio }}</div>
+                    <div class="mb-3">{{ form.stock.label_tag }} {{ form.stock }}</div>
+                    <div class="mb-3">{{ form.categoria.label_tag }} {{ form.categoria }}</div>
+                    <div class="mb-3">{{ form.imagen.label_tag }} {{ form.imagen }}</div>
+                    <div class="form-check mb-3">{{ form.activo }} {{ form.activo.label_tag }}</div>
+                </div>
+            </div>
+            
+            <hr>
+            <button type="submit" class="btn btn-primary">Guardar Producto</button>
+            <a href="{% url 'dashboard:lista_productos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

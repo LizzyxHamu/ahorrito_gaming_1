@@ -5,40 +5,40 @@
 {% block title %}Confirmar Pedido - Ahorrito Gaming{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Confirmar y Pagar</h1>
-
-<div class="row">
-    <div class="col-md-7 col-lg-8">
-        <h4 class="mb-3">Resumen de tu Pedido</h4>
-        <ul class="list-group mb-3">
-            {% for item in cart %}
-            <li class="list-group-item d-flex justify-content-between lh-sm bg-dark-card text-white">
-                <div>
-                    <h6 class="my-0">{{ item.producto.nombre }}</h6>
-                    <small class="text-muted">Cantidad: {{ item.cantidad }}</small>
-                </div>
-                <span class="text-muted">${{ item.subtotal|intcomma }}</span>
-            </li>
-            {% endfor %}
-            <li class="list-group-item d-flex justify-content-between bg-dark-card text-white">
-                <span>Total (CLP)</span>
-                <strong>${{ cart.get_total_price|intcomma }}</strong>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-5 col-lg-4">
-        <h4 class="mb-3">Información de Pago</h4>
-        <div class="card bg-dark-card">
-            <div class="card-body">
-                <p class="text-center">Serás redirigido a Flow para completar tu pago de forma segura.</p>
-                <img src="{% static 'img/flow_logo.png' %}" class="img-fluid d-block mx-auto my-3" alt="Flow" style="max-width: 150px;">
-                <form action="{% url 'cart:checkout' %}" method="post">
-                    {% csrf_token %}
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg">Realizar Pago</button>
+<div class="container my-5">
+    <h1 class="mb-4">Confirmar y Pagar</h1>
+    <div class="row">
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Resumen de tu Pedido</h4>
+            <ul class="list-group mb-3">
+                {% for item in cart %}
+                <li class="list-group-item d-flex justify-content-between lh-sm bg-dark-card text-white">
+                    <div>
+                        <h6 class="my-0">{{ item.producto.nombre }}</h6>
+                        <small class="text-muted">Cantidad: {{ item.cantidad }}</small>
                     </div>
-                </form>
+                    <span class="text-white-50">${{ item.subtotal|intcomma }}</span>
+                </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between bg-dark-ui">
+                    <span>Total (CLP)</span>
+                    <strong>${{ cart.get_total_price|intcomma }}</strong>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-5 col-lg-4">
+            <h4 class="mb-3">Información de Pago</h4>
+            <div class="card bg-dark-card">
+                <div class="card-body">
+                    <p class="card-text">Serás redirigido a Flow para completar tu pago de forma segura.</p>
+                    <img src="{% static 'img/flow_logo.png' %}" class="img-fluid d-block mx-auto my-3" alt="Flow" style="max-width: 150px;">
+                    <form action="{% url 'cart:checkout' %}" method="post">
+                        {% csrf_token %}
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Realizar Pago</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

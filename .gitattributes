@@ -1,0 +1,26 @@
+# Establecer el comportamiento por defecto para que Git no adivine.
+# Le decimos que el texto es "auto" y que el final de línea debe ser LF (Linux).
+* text=auto eol=lf
+
+# Forzar explícitamente que los archivos de texto más comunes usen siempre LF.
+# Esto es crucial para la compatibilidad entre sistemas y para Docker.
+*.py text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sql text eol=lf
+
+# Asegurarse de que los scripts de shell siempre usen LF, que es lo que necesitan.
+*.sh text eol=lf
+
+# Decirle a Git que trate estos archivos como binarios y NUNCA toque sus finales de línea.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pyc binary
